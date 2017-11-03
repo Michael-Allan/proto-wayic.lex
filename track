@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns='http://www.w3.org/1999/xhtml' lang='en-CA' xml:lang='en-CA'>
+    <head>
+        <meta charset='UTF-8'/>
+        <title>The definition of ‘track’ in waycasting</title>
+        </head>
+    <body>
+        <h1>track</h1>
+        <!-- <<< deindent -->
+
+<section>
+    <ul>
+        <li>
+            to discover and accept changes to a <a href='way'>way</a> definition
+            </li>
+        </ul>
+    </section>
+
+        <!-- >>> reindent -->
+        </body>
+    </html>

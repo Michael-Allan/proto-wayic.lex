@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns='http://www.w3.org/1999/xhtml' lang='en-CA' xml:lang='en-CA'>
+    <head>
+        <meta charset='UTF-8'/>
+        <title>The definition of ‘waycast’</title>
+        </head>
+    <body>
+        <h1>waycast</h1>
+        <!-- <<< deindent -->
+
+<section>
+    <ul>
+        <li>
+            (noun) the formalization of a <a href='way'>way</a>, especially for the purpose of publishing it
+            <!-- from http://reluk.ca/project/way/engineer/wayics/cast/way.xht#waycast_definition -->
+            </li>
+        <li>
+            (verb) to formalize a way
+            </li>
+        </ul>
+    </section>
+
+        <!-- >>> reindent -->
+        </body>
+    </html>

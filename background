@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns='http://www.w3.org/1999/xhtml' lang='en-CA' xml:lang='en-CA'>
+    <head>
+        <meta charset='UTF-8'/>
+        <title>The definition of ‘background’ in waycasting</title>
+        </head>
+    <body>
+        <h1>background</h1>
+        <!-- <<< deindent -->
+
+<section>
+    <h2>backgrounding</h2>
+    <ul>
+        <li>
+            the extension, <a href='collate'>collation</a> and <a href='track'>tracking</a>
+            of a <a href='way'>way</a> definition in the background of awareness
+            <!-- from http://reluk.ca/project/way/engineer/wayics/cast/way.xht -->
+            </li>
+        </ul>
+    </section>
+
+        <!-- >>> reindent -->
+        </body>
+    </html>
