@@ -11,11 +11,12 @@
 <section>
     <ul>
         <li>
-            (noun) the formalization of a <a href='way'>way</a>, especially for the purpose of publishing it
-            <!-- from http://reluk.ca/project/way/engineer/wayics/cast/way.xht#waycast_definition -->
+            (noun) the formalized definition of a <a href='way'>way</a>,
+            especially for the purpose of publicly commiting to follow it
+            <!-- from http://reluk.ca/project/way/engineer/wayics/cast/way.xht#waycast_defined -->
             </li>
         <li>
-            (verb) to formalize a way
+            (verb) to formally define a way
             </li>
         </ul>
     </section>
