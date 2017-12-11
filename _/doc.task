@@ -1,0 +1,48 @@
+wayic.lex/doc.task - A dictionary of wayics / documentation in rough
+
+    ____________________________________________________________________________________________________
+    content insertion link`
+    [ purpose
+        - to incorporate lexical content from a source external to a word file
+            - typically another word file
+    [ usage
+        - in a word file, like so:
+
+                ⋯
+              <body>
+                    ⋯
+                  <a rel='content-repository' href='WFILE'>content</a>
+                    ⋯
+                  <script src='http://reluk.ca/project/wayic/lex/_/reader.js'/>
+                  </body>
+
+
+            - where WFILE is the location (URI form) of the content source
+                ( again, typically another word file
+    [ effect
+        - on resolving the link:
+            - WFILE's *body* element is copied and inserted into the present word file
+              as a replacement for the content insertion link (hyperlink *a* element)
+        - should anything go wrong and resolution fail, then:
+            - the insertion link remains as a hyperlink to give manual access to the content
+    [ yet to be implemented
+        - the following have yet to be implemented, pending need
+        + specific content parent
+            - putting a fragment on the *href* in order to indicate a content parent
+              other than the *body* element
+        + instructions on local debugging of relatively linked content
+            - viz. where:
+                - user's access scheme/protocol is 'file'
+                - *href* is a relative URI
+            - writing the instructions
+                - into _/reader.js § Direct rendering from the file system
+                - after the pattern of the namesake § in wayic.read
+            - instucting on some method such as:
+                | bookmarklet
+                    =< file:/home/mike/work/wayic/lex/
+                    -< javascript:(function(){location=(prompt('Path to load?',''))})();
+                        = enter the word file
+
+
+
+                                          Copyright © 2017 Michael Allan and contributors.  Licence MIT.
