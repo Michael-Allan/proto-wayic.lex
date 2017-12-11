@@ -1,14 +1,14 @@
-<!DOCTYPE html>
+<?xml version='1.0' encoding='UTF-8'?>
 <html xmlns='http://www.w3.org/1999/xhtml' lang='en-CA' xml:lang='en-CA'>
     <head>
-        <meta charset='UTF-8'/>
-        <title>The definition of ‘way’</title>
+        <title>‘way’</title>
         </head>
     <body>
-        <h1>way</h1>
         <!-- <<< deindent -->
 
-<section>
+<section      id='way'>
+    <h2><a href='#way'>
+                  way</a></h2>
     <ul>
         <li>
             a personal goal, especially a final or endmost goal, and the chosen means of getting there

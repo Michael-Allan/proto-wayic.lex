@@ -1,26 +1,10 @@
-<!DOCTYPE html>
+<?xml version='1.0' encoding='UTF-8'?>
 <html xmlns='http://www.w3.org/1999/xhtml' lang='en-CA' xml:lang='en-CA'>
     <head>
-        <meta charset='UTF-8'/>
-        <title>The definition of ‘waycast’</title>
+        <title>‘waycast’</title>
         </head>
     <body>
-        <h1>waycast</h1>
-        <!-- <<< deindent -->
-
-<section>
-    <ul>
-        <li>
-            (noun) the formalized definition of a <a href='way'>way</a>,
-            especially for the purpose of publicly commiting to follow it
-            <!-- from http://reluk.ca/project/way/engineer/wayics/cast/way.xht#waycast_defined -->
-            </li>
-        <li>
-            (verb) to formally define a way
-            </li>
-        </ul>
-    </section>
-
-        <!-- >>> reindent -->
+        <a rel='content-repository' href='http://reluk.ca/project/wayic/cast/waycast'>content</a>
+        <script src='_/reader.js'/>
         </body>
     </html>

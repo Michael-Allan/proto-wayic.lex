@@ -1,14 +1,14 @@
-<!DOCTYPE html>
+<?xml version='1.0' encoding='UTF-8'?>
 <html xmlns='http://www.w3.org/1999/xhtml' lang='en-CA' xml:lang='en-CA'>
     <head>
-        <meta charset='UTF-8'/>
-        <title>The definition of ‘wayics’</title>
+        <title>‘wayics’</title>
         </head>
     <body>
-        <h1>wayics</h1>
         <!-- <<< deindent -->
 
-<section>
+<section      id='wayics'>
+    <h2><a href='#wayics'>
+                  wayics</a></h2>
     <ul>
         <li> <!-- after 'ethics' -->
             the branch of knowledge that deals with <a href='way'>ways</a> and <a href='waycast'>waycasts</a>

@@ -2,14 +2,23 @@
 <html xmlns='http://www.w3.org/1999/xhtml' lang='en-CA' xml:lang='en-CA'>
     <head>
         <meta charset='UTF-8'/>
-        <title>The definition of ‘background’ in waycasting</title>
+        <title>‘background’ and related terms</title>
         </head>
     <body>
-        <h1>background</h1>
         <!-- <<< deindent -->
 
-<section>
-    <h2 id='backgrounding'>backgrounding</h2>
+<section      id='background'>
+    <h2><a href='#background'>
+                  background</a></h2>
+    <ul>
+        <li>
+            (verb) to use backgrounding
+            </li>
+        </ul>
+    </section>
+<section      id='backgrounding'>
+    <h2><a href='#backgrounding'>
+                  backgrounding</a></h2>
     <ul>
         <li>
             the interpersonally extended maintenance of a <a href='waycast'>waycast</a>

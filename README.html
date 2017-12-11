@@ -1,12 +1,27 @@
 <!-- This file uses Markdown-compatible HTML because link README.md targets it. -->
 
 <h1>wayic.lex - A dictionary of wayics</h1>
+<p id='web_serving'>
+    When serving this project on the web, or other projects that define words,
+    you’ll want to serve the word files with appropriate response headers.
+    The word files are the ones without a filename extension.  The appropriate headers are:
+    </p>
+<ul>
+    <li><code>
+        <a href='https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.17'>
+        Content type</a>: application/xhtml+xml
+        </code></li>
+    <li><code>
+        <a href='https://fetch.spec.whatwg.org/#http-access-control-allow-origin'>
+        Access-Control-Allow-Origin</a>: *
+        </code></li>
+    </ul>
 <p>
-    When serving this project on the web, you’ll want to serve its word files with a
-    <a href='https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.17'>content type</a>
-    of ‘application/xhtml+xml’.  The word files are the ones without a filename extension.  Here’s a
-    <a href='http://reluk.ca/sys/host/obsidian/etc/apache2/modules.d/90_wayic.conf'>working example</a>
-    of an appropriate <code>ForceType</code> configuration directive for Apache httpd.
+    The purpose of allowing universal access (<code>*</code>) is that word files served elsewhere,
+    including those of local ‘file’ scheme origin, may require access in order to resolve
+    their <a href='http://reluk.ca/project/wayic/lex/_/doc.task'>content insertion links</a>.
+    See also the <a href='http://reluk.ca/sys/host/obsidian/etc/apache2/modules.d/90_wayic.conf'>
+    configuration example</a> for Apache httpd.
     </p>
 <p>
     The files for this project are released under an <a href='LICENCE.txt'>MIT licence</a>.
