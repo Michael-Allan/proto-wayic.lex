@@ -15,6 +15,26 @@
             </li>
         </ul>
     </section>
+<section      id='off_way'>
+    <h2><a href='#off_way'>
+                  off way</a></h2>
+    <ul>
+        <li>
+            not on way
+            </li>
+        </ul>
+    </section>
+<section      id='on_way'>
+    <h2><a href='#on_way'>
+                  on way</a></h2>
+    <ul>
+        <li>
+            (of a wayscript element)
+            the logical state of being in the <a href='root#root_document'>root document</a>
+            given that all waylinks are resolved
+            </li>
+        </ul>
+    </section>
 
         <!-- >>> reindent -->
         </body>
