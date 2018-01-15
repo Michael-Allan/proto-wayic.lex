@@ -11,7 +11,7 @@
   *       <script src='http://reluk.ca/project/wayic/lex/_/reader.js'/>
   *
   *   If you test it directly in the browser (on a ‘file’ scheme), then it’s likely to fail.
-  *   Read the debugging section below.
+  *   Read the troubleshooting section below.
   *
   *
   * ENTRY
@@ -19,13 +19,13 @@
   *   This program starts itself at function *run*, declared below.
   *
   *
-  * DEBUGGING
-  * ---------
-  *   This program reports problems it detects to the debugging console.
+  * TROUBLESHOOTING
+  * ---------------
+  *   This program reports problems it detects to the browser’s debugging console. [CONS]
   *
   *   Direct loading from the file system
   *   - - - - - - - - - - - - - - - - - -
-  *   When a word file is loaded into the client on a ‘file’ scheme URL, this program assumes
+  *   When a word file is loaded into the browser on a ‘file’ scheme URL, this program assumes
   *   you are its author.  Then it will open an *alert* window for any problem such as
   *   malformed content, or anything else that an author might be able to remedy.
   *
@@ -36,7 +36,7 @@
   *
   *       $ cp  way  _word_copy.xht
   *
-  *   Now retest it by loading ‘_word_copy.xht’ into the client.  If the file system allows,
+  *   Now retest it by loading ‘_word_copy.xht’ into the browser.  If the file system allows,
   *   then hard linking (physical linking) will often be more convenient than copying.
   *
   *
@@ -86,11 +86,19 @@
 
 
 
-        const hrefParserDiv = document.createElement( 'div' ); hrefParserDiv.innerHTML = '<a/>';
-
-
-
        // - P u b l i c --------------------------------------------------------------------------------
+
+
+        /** Returns the same URI, but without a fragment.
+          */
+        that.defragmented = function( uri )
+        {
+            // Changing?  sync'd ← http://reluk.ca/project/wayic/read/readable.js
+            const c = uri.lastIndexOf( '#' );
+            if( c >= 0 ) uri = uri.slice( 0, c );
+            return uri;
+        };
+
 
 
         /** Answers whether the given URI is detected to have an abnormal form,
@@ -106,7 +114,7 @@
                 catch( x ) { console.warn( 'Suppressed exception: ' + x ); } // e.g. if *uri* relative
             }
             return false;
-        }
+        };
 
 
 
@@ -181,15 +189,14 @@
       *
       *     @see URIs#normalized
       */
-    const DOCUMENT_LOCATION = ( function()
+    const DOCUMENT_LOCATION = ( ()=>
     {
         // Changing?  sync'd ← http://reluk.ca/project/wayic/read/readable.js
         const wloc = window.location; // [WDL]
         let loc = wloc.toString();
-        const fragmentLength = wloc.hash.length; // which includes the '#' character
-        if( fragmentLength ) loc = loc.slice( 0, -fragmentLength );
+        if( wloc.hash ) loc = URIs.defragmented( loc );
         return URIs.normalized( loc ); // to be sure
-    }() );
+    })();
 
 
 
@@ -283,7 +290,7 @@
         if( !message ) throw "Null parameter";
 
         console.error( message );
-        if( isUserEditor ) alert( message ); // see readable.css § DEBUGGING
+        if( isUserEditor ) alert( message ); // see § TROUBLESHOOTING
     }
 
 
@@ -536,6 +543,8 @@
 
 /** NOTES
   * -----
+  *  [CONS]  https://console.spec.whatwg.org/
+  *
   *  [WDL]  Either 'document.location' or 'window.location', they are identical.
   *         https://www.w3.org/TR/html5/browsers.html#the-location-interface
   */

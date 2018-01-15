@@ -30,7 +30,7 @@ wayic.lex/doc.task - A dictionary of wayics / documentation in rough
         + specific content parent
             - putting a fragment on the *href* in order to indicate a content parent
               other than the *body* element
-        + instructions on local debugging of relatively linked content
+        + instructions on local viewing of relatively linked content
             - viz. where:
                 - user's access scheme/protocol is 'file'
                 - *href* is a relative URI
