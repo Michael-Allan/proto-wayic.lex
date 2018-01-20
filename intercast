@@ -1,0 +1,10 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<html xmlns='http://www.w3.org/1999/xhtml' lang='en-CA' xml:lang='en-CA'>
+    <head>
+        <title>‘intercast’</title>
+        </head>
+    <body>
+        <a rel='content-repository' href='http://reluk.ca/project/wayic/intercast/intercast'>content</a>
+        <script src='_/reader.js'/>
+        </body>
+    </html>
