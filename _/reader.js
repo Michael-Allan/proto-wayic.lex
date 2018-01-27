@@ -235,8 +235,8 @@
                 if( fragmentLength )
                 {
                     const c = docLoc.length - fragmentLength;
+                    contentParentID = docLoc.slice( c + 1 );
                     docLoc = docLoc.slice( 0, c ); // without fragment
-                    contentParentID = value.slice( c + 1 );
                     console.warn( 'Fragmented *href* in content insertion link (no support yet): ' + href );
                     continue;
                 }
