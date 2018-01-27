@@ -10,8 +10,10 @@
   *
   *       <script src='http://reluk.ca/project/wayic/lex/_/reader.js'/>
   *
-  *   If you test it directly in the browser (on a ‘file’ scheme), then it’s likely to fail.
-  *   Read the troubleshooting section below.
+  *   If you load a word file into the browser locally (on a ‘file’ scheme URL),
+  *   then this program is likely to fail.  Read the troubleshooting section below.
+  *
+  *   See also ../doc.task § content insertion link § usage.
   *
   *
   * ENTRY
@@ -32,12 +34,14 @@
   *   Note that content insertion links may fail to resolve under a ‘file’ scheme URL,
   *   appearing instead as hyperlinks with ‘content’ labels.  Usually this can be corrected
   *   by copying the word file to a temporary file with ‘.xht’ extension.  For example,
-  *   if you were trying to read the word file named ‘way’:
+  *   if you were trying to read the word file named ‘waycast’:
   *
-  *       $ cp  way  _word_copy.xht
+  *       $ cp  waycast  _wayic.lex.word_copy.xht
   *
-  *   Now retest it by loading ‘_word_copy.xht’ into the browser.  If the file system allows,
-  *   then hard linking (physical linking) will often be more convenient than copying.
+  *   Now retest it by loading ‘_wayic.lex.word_link.xht’ into the browser.  If the file system allows,
+  *   then hard linking will often be more convenient for troubleshooting purposes than copying:
+  *
+  *       $ ln  waycast  _wayic.lex.word_link.xht
   *
   *
   * NOTES  (continued at bottom)

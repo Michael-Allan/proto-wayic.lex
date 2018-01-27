@@ -19,6 +19,7 @@ wayic.lex/doc.task - Documentation in rough
 
             - where WFILE is the location (URI form) of the content source
                 ( again, typically another word file
+        - see also reader.js §§ Basic usage, Troubleshooting
     [ effect
         - on resolving the link:
             - WFILE's *body* element is copied and inserted into the present word file
