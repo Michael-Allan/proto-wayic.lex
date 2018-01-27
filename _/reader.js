@@ -204,15 +204,29 @@
 
 
 
-    /** Incorporates content from external sources, resolving each content insertion link,
-      * reading its content and swapping it into the present document.
-      *
-      *     @see #CIL_TOKEN_PATTERN
+    /** Reports malformed content, or any other problem that a user with write access
+      * to the document might be able to redress.
       */
-    function fill()
+    function mal( message )
     {
-        const traversal = document.createNodeIterator( document.body, SHOW_ELEMENT );
-        for( ;; )
+        if( !message ) throw "Null parameter";
+
+        console.error( message );
+        if( isUserEditor ) alert( message ); // see § TROUBLESHOOTING
+    }
+
+
+
+    /** Resolves each content insertion link within the given target node by replacing it
+      * with the content of its referent.
+      *
+      *     @param target (Node)
+      *     @param docLoc (string) The target document location in normal URL form.
+      */
+    function resolveInsertions( target, docLoc )
+    {
+        const traversal = document.createNodeIterator( target, SHOW_ELEMENT );
+        for( traversal.nextNode()/*onto the target itself*/;; )
         {
             const t = traversal.nextNode();
             if( t == null ) break;
@@ -227,74 +241,82 @@
             const href = t.getAttribute( 'href' );
             if( !href ) continue;
 
-            let docLoc, contentParentID;
+            const insertionLink = t;
+            const linkURL = new URL( href, docLoc );
+            let sdocLoc = URIs.normalizedByURL( linkURL ); // sdoc, the source document
+            const fragmentLength = linkURL.hash.length; // which includes the '#' character
+            let sourceReader;
+            if( fragmentLength )
             {
-                const linkURL = new URL( href, DOCUMENT_LOCATION );
-                docLoc = URIs.normalizedByURL( linkURL );
-                const fragmentLength = linkURL.hash.length; // which includes the '#' character
-                if( fragmentLength )
+                const c = sdocLoc.length - fragmentLength;
+                const id = sdocLoc.slice( c + 1 );
+                sdocLoc = sdocLoc.slice( 0, c ); // without fragment
+                sourceReader = new class extends DocumentReader
                 {
-                    const c = docLoc.length - fragmentLength;
-                    contentParentID = docLoc.slice( c + 1 );
-                    docLoc = docLoc.slice( 0, c ); // without fragment
-                    console.warn( 'Fragmented *href* in content insertion link (no support yet): ' + href );
-                    continue;
-                }
-                else contentParentID = null;
+                    read( sdocReg, sdoc )
+                    {
+                        const s = sdoc.getElementById( id );
+                        if( s != null ) insertFrom( s );
+                        else mal( "Broken content insertion link at '#': No such *id*: " + href );
+                    }
+                };
             }
-            const contentInsertionLink = t;
-            Documents.readNowOrLater( docLoc, new class extends DocumentReader
+            else sourceReader = new class extends DocumentReader
             {
-                read( docReg, doc )
+                read( sdocReg, sdoc )
                 {
-                  // Find the content parent
-                  // -----------------------
-                    console.assert( contentParentID == null, A ); // only *body* supported at present
-                    let contentParent;
-                    const traversal = doc.createTreeWalker( doc.documentElement, SHOW_ELEMENT );
+                    const traversal = sdoc.createTreeWalker( sdoc.documentElement, SHOW_ELEMENT );
                     for( let u = traversal.nextNode();; u = traversal.nextSibling() )
                     {
                         if( u == null )
                         {
-                            mal( 'Broken content insertion link: Document has no body: ' + href );
-                            return;
+                            mal( 'Broken content insertion link: No *body* element: ' + href );
+                            break;
                         }
 
                         if( u.localName == 'body' && u.namespaceURI == NS_HTML )
                         {
-                            contentParent = u;
+                            insertFrom( u );
                             break;
                         }
                     }
-
-                  // Copy and insert the content
-                  // ---------------------------
-                    contentParent = document.importNode( contentParent, /*deeply*/true );
-                    const newParent = contentInsertionLink.parentNode;
-                    while( contentParent.hasChildNodes() )
-                    {
-                        const c = contentParent.firstChild;
-                        if( c.localName == 'script' && ns == NS_HTML ) contentParent.removeChild( c );
-                          // avoiding a reload of the present script, or (to be sure) any script load
-                        else newParent.insertBefore( c, contentInsertionLink );
-                    }
-                    newParent.removeChild( contentInsertionLink ); // replaced by content
                 }
-            });
+            };
+            Documents.readNowOrLater( sdocLoc, sourceReader );
+            function insertFrom( sdocSourceElement )
+            {
+              // Import the source element, the parent of the content to insert
+              // -------------------------
+                const oldParent = document.importNode( sdocSourceElement, /*deeply*/true );
+                const newParent = insertionLink.parentNode;
+
+              // Resolve any insertions it contains
+              // ----------------------
+                resolveInsertions( oldParent, sdocLoc );
+
+              // Insert its content
+              // ------------------
+                while( oldParent.hasChildNodes() )
+                {
+                    const c = oldParent.firstChild;
+                    if( c.localName == 'script' && c.namespaceURI == NS_HTML )
+                    {
+                        // avoid reloading the present script, or loading any script (to be sure)
+                        oldParent.removeChild( c );
+                    }
+                    else newParent.insertBefore( c, insertionLink ); // before, ∴ not traversed again
+                }
+
+              // Remove the insertion link, now redundant
+              // -------------------------
+                function removeLink() { newParent.removeChild( insertionLink ); }
+             // if( traversal.currentNode != insertionLink || !insertionLink.nextSibling ) removeLink();
+             // else Promise.resolve().then( removeLink ); // later, when it won't trap the traversal
+             /// but only a TreeWalker traversal could be trapped that way
+                console.assert( traversal instanceof NodeIterator, A );
+                removeLink();
+            }
         }
-    }
-
-
-
-    /** Reports malformed content, or any other problem that a user with write access
-      * to the document might be able to redress.
-      */
-    function mal( message )
-    {
-        if( !message ) throw "Null parameter";
-
-        console.error( message );
-        if( isUserEditor ) alert( message ); // see § TROUBLESHOOTING
     }
 
 
@@ -312,7 +334,7 @@
         console.assert( (eval('var _tmp = null'), typeof _tmp === 'undefined'), AA + 'Strict mode' );
           // http://www.ecma-international.org/ecma-262/6.0/#sec-strict-mode-code
           // credit Noseratio, https://stackoverflow.com/a/18916788/2402790
-        fill();
+        resolveInsertions( document.body, DOCUMENT_LOCATION );
     }
 
 

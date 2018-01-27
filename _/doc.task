@@ -3,34 +3,36 @@ wayic.lex/doc.task - Documentation in rough
     ____________________________________________________________________________________________________
     content insertion link`
     [ purpose
-        - to incorporate lexical content from a source external to a word file
-            - typically another word file
+        - in a word document
+        - to insert content from an external document (the source)
+            - which is typically another word document
     [ usage
-        - in a word file, like so:
+        - in a word file
+        + to insert all content from the source's body
+            - here SOURCE-DOC is the URL of the source document:
 
-                ⋯
-              <body>
                     ⋯
-                  <a rel='content-repository' href='WFILE'>content</a>
+                  <body>
+                        ⋯
+                      <a rel='content-repository' href='SOURCE-DOC'>content</a>
+                        ⋯
+                      <script src='http://reluk.ca/project/wayic/lex/_/reader.js'/>
+                      </body>
+
+            - see also reader.js §§ Basic usage, Troubleshooting
+        + to insert the content of a particular source element
+            - as above, but here specify also the *id* attribute of the element:
+
                     ⋯
-                  <script src='http://reluk.ca/project/wayic/lex/_/reader.js'/>
-                  </body>
-
-
-            - where WFILE is the location (URI form) of the content source
-                ( again, typically another word file
-        - see also reader.js §§ Basic usage, Troubleshooting
+                  <a rel='content-repository' href='SOURCE-DOC#ELEMENT-ID'>content</a>
+                    ⋯
     [ effect
-        - on resolving the link:
-            - WFILE's *body* element is copied and inserted into the present word file
-              as a replacement for the content insertion link (hyperlink *a* element)
+        - the source content replaces for the content insertion link (hyperlink *a* element)
+          within the rendered view of the word document
         - should anything go wrong and resolution fail, then:
             - the insertion link remains as a hyperlink to give manual access to the content
     [ yet to be implemented
         - the following have yet to be implemented, pending need
-        + specific content parent
-            - putting a fragment on the *href* in order to indicate a content parent
-              other than the *body* element
         + instructions on local viewing of relatively linked content
             - viz. where:
                 - user's access scheme/protocol is 'file'
@@ -46,4 +48,4 @@ wayic.lex/doc.task - Documentation in rough
 
 
 
-                                          Copyright © 2017 Michael Allan and contributors.  Licence MIT.
+                                     Copyright © 2017-2018 Michael Allan and contributors.  Licence MIT.
