@@ -226,7 +226,7 @@
     function resolveInsertions( target, docLoc )
     {
         const traversal = document.createNodeIterator( target, SHOW_ELEMENT );
-        for( traversal.nextNode()/*onto the target itself*/;; )
+        for( traversal.nextNode()/*onto the target element itself*/;; )
         {
             const t = traversal.nextNode();
             if( t == null ) break;
@@ -505,7 +505,7 @@
                   // Normalize *href* attributes
                   // ---------------------------
                     const traversal = doc.createNodeIterator( doc, SHOW_ELEMENT );
-                    for( ;; )
+                    for( traversal.nextNode()/*onto the document node itself*/;; )
                     {
                         const t = traversal.nextNode();
                         if( t == null ) break;
