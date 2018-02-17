@@ -31,9 +31,8 @@
     <ul>
         <li>
             (of a wayscript element)
-            the logical state of being in the <a href='root#root_document'>root document</a>,
-            or otherwise part of a given way definition,
-            once all waylinks are resolved
+            the logical state of being in the <a href='root#root_element'>root element</a>
+            after resolving all waylinks
             </li>
         </ul>
     </section>
