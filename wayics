@@ -4,7 +4,7 @@
         <title>‘wayics’</title>
         </head>
     <body>
-        <!-- <<< deindent -->
+
 
 <section      id='wayics'>
     <h2><a href='#wayics'>
@@ -19,6 +19,6 @@
         </ul>
     </section>
 
-        <!-- >>> reindent -->
+
         </body>
     </html>
