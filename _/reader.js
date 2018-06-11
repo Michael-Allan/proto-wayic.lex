@@ -114,7 +114,7 @@
         {
             if( toEnforceCostlyConstraints )
             {
-                try{ return uri != that.normalized(uri) }
+                try{ return uri !== that.normalized(uri) }
                 catch( x ) { console.warn( 'Suppressed exception: ' + x ); } // e.g. if *uri* relative
             }
             return false;
@@ -229,14 +229,14 @@
         for( traversal.nextNode()/*onto the target element itself*/;; )
         {
             const t = traversal.nextNode();
-            if( t == null ) break;
+            if( t === null ) break;
 
-            if( t.localName != 'a' ) continue;
+            if( t.localName !== 'a' ) continue;
 
             const rel = t.getAttribute( 'rel' );
             if( !rel || !CIL_TOKEN_PATTERN.test(rel) ) continue;
 
-            if( t.namespaceURI != NS_HTML ) continue;
+            if( t.namespaceURI !== NS_HTML ) continue;
 
             const href = t.getAttribute( 'href' );
             if( !href ) continue;
@@ -256,7 +256,7 @@
                     read( sdocReg, sdoc )
                     {
                         const s = sdoc.getElementById( id );
-                        if( s != null ) insertFrom( s );
+                        if( s !== null ) insertFrom( s );
                         else mal( "Broken content insertion link at '#': No such *id*: " + href );
                     }
                 };
@@ -268,13 +268,13 @@
                     const traversal = sdoc.createTreeWalker( sdoc.documentElement, SHOW_ELEMENT );
                     for( let u = traversal.nextNode();; u = traversal.nextSibling() )
                     {
-                        if( u == null )
+                        if( u === null )
                         {
                             mal( 'Broken content insertion link: No *body* element: ' + href );
                             break;
                         }
 
-                        if( u.localName == 'body' && u.namespaceURI == NS_HTML )
+                        if( u.localName === 'body' && u.namespaceURI === NS_HTML )
                         {
                             insertFrom( u );
                             break;
@@ -299,7 +299,7 @@
                 while( oldParent.hasChildNodes() )
                 {
                     const c = oldParent.firstChild;
-                    if( c.localName == 'script' && c.namespaceURI == NS_HTML )
+                    if( c.localName === 'script' && c.namespaceURI === NS_HTML )
                     {
                         // avoid reloading the present script, or loading any script (to be sure)
                         oldParent.removeChild( c );
@@ -310,7 +310,7 @@
               // Remove the insertion link, now redundant
               // -------------------------
                 function removeLink() { newParent.removeChild( insertionLink ); }
-             // if( traversal.currentNode != insertionLink || !insertionLink.nextSibling ) removeLink();
+             // if( traversal.currentNode !== insertionLink || !insertionLink.nextSibling ) removeLink();
              // else Promise.resolve().then( removeLink ); // later, when it won't trap the traversal
              /// but only a TreeWalker traversal could be trapped that way
                 console.assert( traversal instanceof NodeIterator, A );
@@ -508,13 +508,13 @@
                     for( traversal.nextNode()/*onto the document node itself*/;; )
                     {
                         const t = traversal.nextNode();
-                        if( t == null ) break;
+                        if( t === null ) break;
 
                         const href = t.getAttributeNS( null, 'href' );
                         if( !href ) continue;
 
                         const hrefN = URIs.normalized( href, docLoc );
-                        if( hrefN != href ) t.setAttributeNS( null, 'href', hrefN );
+                        if( hrefN !== href ) t.setAttributeNS( null, 'href', hrefN );
                     }
                 };
 
