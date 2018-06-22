@@ -129,7 +129,7 @@
 
 
         /** Returns the full form, normalized equivalent of the given URI reference.
-          * This is a convenience function.  If you already have a instance of URL,
+          * This is a convenience function.  If you already have an instance of URL,
           * then a direct call to *normalizedByURL* will be more efficient.
           *
           *     @param ref (string) The URI reference.
@@ -209,7 +209,7 @@
       */
     function mal( message )
     {
-        if( !message ) throw "Null parameter";
+        if( message === null ) throw "Null parameter";
 
         console.error( message );
         if( isUserEditor ) alert( message ); // see § TROUBLESHOOTING
@@ -234,19 +234,19 @@
             if( t.localName !== 'a' ) continue;
 
             const rel = t.getAttribute( 'rel' );
-            if( !rel || !CIL_TOKEN_PATTERN.test(rel) ) continue;
+            if( rel === null || !CIL_TOKEN_PATTERN.test(rel) ) continue;
 
             if( t.namespaceURI !== NS_HTML ) continue;
 
             const href = t.getAttribute( 'href' );
-            if( !href ) continue;
+            if( href === null ) continue;
 
             const insertionLink = t;
             const linkURL = new URL( href, docLoc );
             let sdocLoc = URIs.normalizedByURL( linkURL ); // sdoc, the source document
             const fragmentLength = linkURL.hash.length; // which includes the '#' character
             let sourceReader;
-            if( fragmentLength )
+            if( fragmentLength > 0 )
             {
                 const c = sdocLoc.length - fragmentLength;
                 const id = sdocLoc.slice( c + 1 );
@@ -310,7 +310,10 @@
               // Remove the insertion link, now redundant
               // -------------------------
                 function removeLink() { newParent.removeChild( insertionLink ); }
-             // if( traversal.currentNode !== insertionLink || !insertionLink.nextSibling ) removeLink();
+             // if( traversal.currentNode !== insertionLink || insertionLink.nextSibling === null )
+             // {
+             //     removeLink();
+             // }
              // else Promise.resolve().then( removeLink ); // later, when it won't trap the traversal
              /// but only a TreeWalker traversal could be trapped that way
                 console.assert( traversal instanceof NodeIterator, A );
@@ -415,7 +418,7 @@
 
         function notifyReader( r, docReg, doc )
         {
-            if( doc ) r.read( docReg, doc );
+            if( doc !== null ) r.read( docReg, doc );
             r.close( docReg );
         }
 
@@ -455,7 +458,7 @@
             if( URIs.isDetectedAbnormal( docLoc )) throw URIs.message_abnormal( docLoc );
 
             const entry = registry.get( docLoc );
-            if( entry )
+            if( entry !== undefined )
             {
                 if( entry instanceof DocumentRegistration ) notifyReader( reader, entry, entry.document );
                 else // registration is still pending
@@ -511,7 +514,7 @@
                         if( t === null ) break;
 
                         const href = t.getAttributeNS( null, 'href' );
-                        if( !href ) continue;
+                        if( href === null ) continue;
 
                         const hrefN = URIs.normalized( href, docLoc );
                         if( hrefN !== href ) t.setAttributeNS( null, 'href', hrefN );
