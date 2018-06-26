@@ -48,25 +48,33 @@
   * -----
   */
 'use strict';
+console.assert( (eval('var _tmp = null'), typeof _tmp === 'undefined'),
+  'Failed assertion: Strict mode is in effect' );
+  // http://www.ecma-international.org/ecma-262/6.0/#sec-strict-mode-code
+  // Credit Noseratio, https://stackoverflow.com/a/18916788/2402790
 ( function()
 {
 
+  /// ==================================================================================================
+ ///  P r e l i m i n a r y   d e c l a r a t i o n s
+/// ====================================================================================================
 
-    /** Whether the present document appears to be stored on the user's computer or local network.
+
+    /** Whether the present document was requested from a 'file' scheme URL.
       */
-    const isDocumentLocallyStored = document.URL.startsWith( 'file:' );
+    const wasRequestFileSchemed = document.URL.startsWith( 'file:' );
 
 
 
     /** Whether the user can likely edit the present document.
       */
-    const isUserEditor = isDocumentLocallyStored;
+    const isUserEditor = wasRequestFileSchemed;
 
 
 
     /** Whether it appears that the user would be unable to correct faults in this program.
       */
-    const isUserNonProgrammer = !isDocumentLocallyStored;
+    const isUserNonProgrammer = !wasRequestFileSchemed;
 
 
 
@@ -86,16 +94,13 @@
     const URIs = ( function()
     {
 
-        const that = {}; // the public interface of URIs
+        const expo = {}; // The public interface of URIs
 
-
-
-       // - P u b l i c --------------------------------------------------------------------------------
 
 
         /** Returns the same URI, but without a fragment.
           */
-        that.defragmented = function( uri )
+        expo.defragmented = function( uri )
         {
             // Changing?  sync'd ← http://reluk.ca/project/wayic/read/readable.js
             const c = uri.lastIndexOf( '#' );
@@ -110,12 +115,12 @@
           *
           *     @see #normalize
           */
-        that.isDetectedAbnormal = function( uri )
+        expo.isDetectedAbnormal = function( uri )
         {
             if( toEnforceCostlyConstraints )
             {
-                try{ return uri !== that.normalized(uri) }
-                catch( x ) { console.warn( 'Suppressed exception: ' + x ); } // e.g. if *uri* relative
+                try{ return uri !== expo.normalized(uri) }
+                catch( x ) { console.warn( 'Suppressed exception: ' + x ); } // E.g. if *uri* relative
             }
             return false;
         };
@@ -124,7 +129,7 @@
 
         /** Returns a message that the given URI is not in normal form.
           */
-        that.message_abnormal = function( uri ) { return 'Not in normal form:' + uri; };
+        expo.message_abnormal = function( uri ) { return 'Not in normal form:' + uri; };
 
 
 
@@ -140,19 +145,17 @@
           *     @return (string)
           *     @throw Error if *ref* is relative and *base* is undefined.
           */
-        that.normalized = function( ref, base ) { return that.normalizedByURL( new URL( ref, base )); };
+        expo.normalized = function( ref, base ) { return expo.normalizedByURL( new URL( ref, base )); };
 
 
 
         /** Returns the normalized URI (string) formed by the given instance of URL.
           */
-        that.normalizedByURL = function( u ) { return u.href; };
+        expo.normalizedByURL = function( u ) { return u.href; };
 
 
 
-       // - - -
-
-        return that;
+        return expo;
 
     }() );
 
@@ -199,7 +202,7 @@
         const wloc = window.location; // [WDL]
         let loc = wloc.toString();
         if( wloc.hash ) loc = URIs.defragmented( loc );
-        return URIs.normalized( loc ); // to be sure
+        return URIs.normalized( loc ); // To be sure
     })();
 
 
@@ -212,7 +215,7 @@
         if( message === null ) throw "Null parameter";
 
         console.error( message );
-        if( isUserEditor ) alert( message ); // see § TROUBLESHOOTING
+        if( isUserEditor ) alert( message ); // See § TROUBLESHOOTING
     }
 
 
@@ -243,14 +246,14 @@
 
             const insertionLink = t;
             const linkURL = new URL( href, docLoc );
-            let sdocLoc = URIs.normalizedByURL( linkURL ); // sdoc, the source document
-            const fragmentLength = linkURL.hash.length; // which includes the '#' character
+            let sdocLoc = URIs.normalizedByURL( linkURL ); // Location of the source document
+            const fragmentLength = linkURL.hash.length; // Which includes the '#' character
             let sourceReader;
             if( fragmentLength > 0 )
             {
                 const c = sdocLoc.length - fragmentLength;
                 const id = sdocLoc.slice( c + 1 );
-                sdocLoc = sdocLoc.slice( 0, c ); // without fragment
+                sdocLoc = sdocLoc.slice( 0, c ); // Without fragment
                 sourceReader = new class extends DocumentReader
                 {
                     read( sdocReg, sdoc )
@@ -301,10 +304,10 @@
                     const c = oldParent.firstChild;
                     if( c.localName === 'script' && c.namespaceURI === NS_HTML )
                     {
-                        // avoid reloading the present script, or loading any script (to be sure)
                         oldParent.removeChild( c );
+                          // Avoiding a rerun of any program, including the present program
                     }
-                    else newParent.insertBefore( c, insertionLink ); // before, ∴ not traversed again
+                    else newParent.insertBefore( c, insertionLink ); // Before, ∴ not traversed again
                 }
 
               // Remove the insertion link, now redundant
@@ -314,8 +317,8 @@
              // {
              //     removeLink();
              // }
-             // else Promise.resolve().then( removeLink ); // later, when it won't trap the traversal
-             /// but only a TreeWalker traversal could be trapped that way
+             // else Promise.resolve().then( removeLink ); // Later, when it will not trap the traversal
+             /// But only a TreeWalker traversal could be trapped in that way, not a NodeIterator
                 console.assert( traversal instanceof NodeIterator, A );
                 removeLink();
             }
@@ -332,13 +335,7 @@
 
     /** Runs this program.
       */
-    function run()
-    {
-        console.assert( (eval('var _tmp = null'), typeof _tmp === 'undefined'), AA + 'Strict mode' );
-          // http://www.ecma-international.org/ecma-262/6.0/#sec-strict-mode-code
-          // credit Noseratio, https://stackoverflow.com/a/18916788/2402790
-        resolveInsertions( document.body, DOCUMENT_LOCATION );
-    }
+    function run() { resolveInsertions( document.body, DOCUMENT_LOCATION ); }
 
 
 
@@ -412,31 +409,8 @@
     const Documents = ( function() // Changing?  sync'd ← http://reluk.ca/project/wayic/read/readable.js
     {
 
-        const that = {}; // the public interface of Documents
+        const expo = {}; // The public interface of Documents
 
-
-
-        function notifyReader( r, docReg, doc )
-        {
-            if( doc !== null ) r.read( docReg, doc );
-            r.close( docReg );
-        }
-
-
-
-        const PRESENT_DOCUMENT_REGISTRATION = new DocumentRegistration( DOCUMENT_LOCATION, document );
-
-
-
-        /** Map of pending and complete document registrations, including that of the present document.
-          * The entry key is DocumentRegistration#location.  The value is either the registration itself
-          * or the readers (Array of DocumentReader) that await it.
-          */
-        const registry = new Map().set( DOCUMENT_LOCATION, PRESENT_DOCUMENT_REGISTRATION );
-
-
-
-       // - P u b l i c --------------------------------------------------------------------------------
 
 
         /** Tries to retrieve the indicated document for the given reader.  If *docLoc* indicates
@@ -453,7 +427,7 @@
           *
           *     @see URIs#normalized
           */
-        that.readNowOrLater = function( docLoc, reader )
+        expo.readNowOrLater = function( docLoc, reader )
         {
             if( URIs.isDetectedAbnormal( docLoc )) throw URIs.message_abnormal( docLoc );
 
@@ -461,10 +435,10 @@
             if( entry !== undefined )
             {
                 if( entry instanceof DocumentRegistration ) notifyReader( reader, entry, entry.document );
-                else // registration is still pending
+                else // Registration still pends
                 {
                     console.assert( entry instanceof Array, A );
-                    entry/*readers*/.push( reader ); // await the registration
+                    entry/*readers*/.push( reader ); // Await the registration
                 }
                 return;
             }
@@ -476,9 +450,9 @@
           // Configure a document request
           // ----------------------------
             const req = new XMLHttpRequest();
-            req.open( 'GET', docLoc, /*asynchronous*/true ); // misnomer, opens nothing, only sets config
+            req.open( 'GET', docLoc, /*asynchronous*/true ); // Misnomer, opens nothing, only sets config
          // req.overrideMimeType( 'application/xhtml+xml' );
-         /// still it parses to an XMLDocument (Firefox 52), not to HTML like the present document
+         /// Still it parses to an XMLDocument (Firefox 52), not to HTML like the present document
             req.responseType = 'document';
             req.timeout = docLoc.startsWith('file:')? 2000: 8000; // ms
 
@@ -554,16 +528,37 @@
 
 
 
-       // - - -
+       // - P r i v a t e ------------------------------------------------------------------------------
 
-        return that;
+
+        function notifyReader( r, docReg, doc )
+        {
+            if( doc !== null ) r.read( docReg, doc );
+            r.close( docReg );
+        }
+
+
+
+        const PRESENT_DOCUMENT_REGISTRATION = new DocumentRegistration( DOCUMENT_LOCATION, document );
+
+
+
+        /** Map of pending and complete document registrations, including that of the present document.
+          * The entry key is DocumentRegistration#location.  The value is either the registration itself
+          * or the readers (Array of DocumentReader) that await it.
+          */
+        const registry = new Map().set( DOCUMENT_LOCATION, PRESENT_DOCUMENT_REGISTRATION );
+
+
+
+        return expo;
 
     }() );
 
 
 
 
-////////////////////
+   // ==============
 
     run();
 
