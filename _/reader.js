@@ -27,21 +27,9 @@
   *
   *   Direct loading from the file system
   *   - - - - - - - - - - - - - - - - - -
-  *   When a word file is loaded into the browser on a ‘file’ scheme URL, this program assumes
-  *   you are its author.  Then it will open an *alert* window for any problem such as
-  *   malformed content, or anything else that an author might be able to remedy.
-  *
-  *   Note that content insertion links may fail to resolve under a ‘file’ scheme URL,
-  *   appearing instead as hyperlinks with ‘content’ labels.  Usually this can be corrected
-  *   by copying the word file to a temporary file with ‘.xht’ extension.  For example,
-  *   if you were trying to read the word file named ‘waycast’:
-  *
-  *       $ cp  waycast  _wayic.lex.word_copy.xht
-  *
-  *   Now retest it by loading ‘_wayic.lex.word_link.xht’ into the browser.  If the file system allows,
-  *   then hard linking will often be more convenient for troubleshooting purposes than copying:
-  *
-  *       $ ln  waycast  _wayic.lex.word_link.xht
+  *   When a word file is requested from a ‘file’ scheme URL, this program assumes you are its author.
+  *   Then it will open an *alert* window for any problem such as malformed content,
+  *   or anything else that an author might be able to remedy.
   *
   *
   * NOTES  (continued at bottom)
