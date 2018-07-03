@@ -7,7 +7,7 @@ wayic.lex/doc.task - Documentation in rough
         - to insert content from an external document (the source)
             - which is typically another word document
     [ usage
-        - in a word file
+        - in a word document
         + to insert all content from the source's body
             - here SOURCE-DOC is the URL of the source document:
 
@@ -44,7 +44,7 @@ wayic.lex/doc.task - Documentation in rough
                 | bookmarklet
                     =< file:/home/mike/work/wayic/lex/
                     -< javascript:(function(){location=(prompt('Path to load?',''))})();
-                        = enter the word file
+                        = enter the path to the word document
 
 
 
