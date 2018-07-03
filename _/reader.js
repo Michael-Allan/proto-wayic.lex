@@ -5,15 +5,12 @@
   *
   * BASIC USAGE
   * -----------
-  *   This program is for use in word files.  To use it, append the following line
-  *   to the end of the *body* element:
+  *   This program is for use in word files that are viewed in a web browser.
+  *   To use it, append the following line to the end of the *body* element:
   *
   *       <script src='http://reluk.ca/project/wayic/lex/_/reader.js'/>
   *
-  *   If you load a word file into the browser locally (on a ‘file’ scheme URL),
-  *   then this program is likely to fail.  Read the troubleshooting section below.
-  *
-  *   See also ../doc.task § content insertion link § usage.
+  *   For more information, see doc.task § content insertion link § usage.
   *
   *
   * ENTRY
@@ -25,11 +22,11 @@
   * ---------------
   *   This program reports problems it detects to the browser’s debugging console. [CONS]
   *
-  *   Direct loading from the file system
-  *   - - - - - - - - - - - - - - - - - -
-  *   When a word file is requested from a ‘file’ scheme URL, this program assumes you are its author.
-  *   Then it will open an *alert* window for any problem such as malformed content,
-  *   or anything else that an author might be able to remedy.
+  *   Direct viewing from the local file system
+  *   -----------------------------------------
+  *     When a word file is requested from a ‘file’ scheme URL, this program assumes you are its author.
+  *     Then it will open an *alert* window for any problem such as malformed content,
+  *     or anything else that an author might be able to remedy.
   *
   *
   * NOTES  (continued at bottom)
@@ -190,7 +187,7 @@ console.assert( (eval('var _tmp = null'), typeof _tmp === 'undefined'),
         const wloc = window.location; // [WDL]
         let loc = wloc.toString();
         if( wloc.hash ) loc = URIs.defragmented( loc );
-        return URIs.normalized( loc ); // To be sure
+        return URIs.normalized( loc ); // To be certain
     })();
 
 
