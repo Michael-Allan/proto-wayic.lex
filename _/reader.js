@@ -20,13 +20,22 @@
   *
   * TROUBLESHOOTING
   * ---------------
-  *   This program reports problems it detects to the browser’s debugging console. [CONS]
   *
-  *   Direct viewing from the local file system
-  *   -----------------------------------------
-  *     When a word document is requested from a ‘file’ scheme URL, this program assumes you are its author.
-  *     Then it will open an *alert* window for any problem such as malformed content,
-  *     or anything else that an author might be able to remedy.
+  *   Console reporting
+  *   -----------------
+  *     This program reports problems it detects to the browser’s debugging console.
+  *     https://console.spec.whatwg.org/
+  *
+  *   Requests by ‘file’ scheme
+  *   -------------------------
+  *     When the user requests a word document from a ‘file’ scheme URL.
+  *
+  *     Alert reporting
+  *     ---------------
+  *       When the user requests a word document from a ‘file’ scheme URL,
+  *       this program assumes that the user is the author of that document.  Then,
+  *       in addition to console reporting, it opens an *alert* window to report malformed content
+  *       or any other problem that an author might be able to remedy.
   *
   *
   * NOTES  (continued at bottom)
@@ -550,10 +559,8 @@ console.assert( (eval('var _tmp = null'), typeof _tmp === 'undefined'),
 }() );
 
 
-/** NOTES
-  * -----
-  *  [CONS]  https://console.spec.whatwg.org/
-  *
+/** NOTE
+  * ----
   *  [WDL]  Either 'document.location' or 'window.location', they are identical.
   *         https://www.w3.org/TR/html5/browsers.html#the-location-interface
   */
