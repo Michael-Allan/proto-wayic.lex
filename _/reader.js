@@ -37,6 +37,16 @@
   *       in addition to console reporting, it opens an *alert* window to report malformed content
   *       or any other problem that an author might be able to remedy.
   *
+  *     Limitations
+  *     -----------
+  *       When a Chrome user requests a word document from a ‘file’ scheme URL, any content insertion
+  *       link that uses a relative reference will fail to resolve its target (Chrome 65).
+  *       The link then forms as a hyperlink, which the user must activate in order to view the content.
+  *       Security constraints enforced by the browser are the underlying cause of this limitation.
+  *
+  *       A workaround is the Chrome option ‘--allow-file-access-from-files’.
+  *       [AFA in http://reluk.ca/project/wayic/read/readable.css]
+  *
   *
   * NOTES  (continued at bottom)
   * -----
