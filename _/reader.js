@@ -289,7 +289,7 @@ console.assert( (eval('var _tmp = null'), typeof _tmp === 'undefined'),
                     }
                 }
             };
-            Documents.readNowOrLater( sdocLoc, sourceReader );
+            DocumentCache.readNowOrLater( sdocLoc, sourceReader );
             function insertFrom( sdocSourceElement )
             {
               // Import the source element, the parent of the content to insert
@@ -353,78 +353,72 @@ console.assert( (eval('var _tmp = null'), typeof _tmp === 'undefined'),
 
 
 
-    /** A reader of documents.
-      */
-    class DocumentReader // Changing?  sync'd ← http://reluk.ca/project/wayic/read/readable.js
-    {
-
-        /** Closes this reader.
-          *
-          *     @param docReg (DocumentRegistration)
-          */
-        close( docReg ) {}
-
-
-        /** Reads the document.
-          *
-          *     @param docReg (DocumentRegistration)
-          *     @param doc (Document)
-          */
-        read( docReg, doc ) {}
-
-    }
-
-
-
-   // ==================================================================================================
-
-
-    /** The generalized record of a document.
-      */
-    class DocumentRegistration // Changing?  sync'd ← http://reluk.ca/project/wayic/read/readable.js
-    {
-
-        constructor( location, doc = null )
+        class DocumentCacheEntry
         {
-            this._location = location;
-            this._document = doc;
+
+
+            /** Constructs a DocumentCacheEntry.
+              *
+              *     @see #document
+              *     @see #location
+              *     @see #readers
+              */
+            constructor( document, location, readers )
+            {
+                this._document = document;
+                this._location = location;
+                this._readers = readers;
+            }
+
+
+
+            /** The cached document, or null if document storage is pending or failed.
+              *
+              *     @return (Document)
+              */
+            get document() { return this._document; }
+            set document( _ ) { this._document = _; }
+
+
+
+            /** The location of the document in normal URL form.
+              *
+              *     @return (string)
+              *     @see URIs#normalized
+              */
+            get location() { return this._location; }
+
+
+
+            /** The readers to notify of document storage.
+              * This property is nulled when notification commences.
+              *
+              *     @return (Array of DocumentReader)
+              */
+            get readers() { return this._readers; }
+            set readers( _ ) { this._readers = _; }
+
+
         }
 
 
-        /** The registered document, or null if the document could not be retrieved.
-          */
-        get document() { return this._document; }
-        set document( d ) { this._document = d; }
 
-
-        /** The location of the document in normal form.
-          */
-        get location() { return this._location; }
-
-    }
-
-
-
-   // ==================================================================================================
-
-
-    /** Dealing with documents at large, not only the present document.
+    /** Store of way declaration documents, including the present document.
       */
-    const Documents = ( function() // Changing?  sync'd ← http://reluk.ca/project/wayic/read/readable.js
+    const DocumentCache = ( function()
     {
 
-        const expo = {}; // The public interface of Documents
+        const expo = {}; // The public interface of DocumentCache
+
+        // Changing?  sync'd ← http://reluk.ca/project/wayic/read/readable.js
 
 
 
-        /** Tries to retrieve the indicated document for the given reader.  If *docLoc* indicates
-          * the present document, then immediately the reader is given the present document as is,
-          * followed by a call to reader.close.
+        /** Gives the indicated document to the reader.  If already the document is stored,
+          * then immediately it calls reader.read, followed by reader.close.
           *
-          * <p>Otherwise this method starts a retrieval process.  It may return early and leave
-          * the process to finish later.  If the process succeeds, then it normalizes all namespaceless
-          * *href* attributes of the document and calls reader.read.
-          * Regardless it always finishes by calling reader.close.</p>
+          * Otherwise this function starts a storage process and returns.  If the process eventually
+          * succeeds, then it calls reader.read.  Regardless it ends by calling reader.close.
           *
           *     @param docLoc (string) The document location in normal URL form.
           *     @param reader (DocumentReader)
@@ -435,98 +429,84 @@ console.assert( (eval('var _tmp = null'), typeof _tmp === 'undefined'),
         {
             if( URIs.isDetectedAbnormal( docLoc )) throw URIs.message_abnormal( docLoc );
 
-            const entry = registry.get( docLoc );
-            if( entry !== undefined )
+            let entry = entryMap.get( docLoc );
+            if( entry !== undefined ) // Then the document was already requested
             {
-                if( entry instanceof DocumentRegistration ) notifyReader( reader, entry, entry.document );
-                else // Registration still pends
-                {
-                    console.assert( entry instanceof Array, A );
-                    entry/*readers*/.push( reader ); // Await the registration
-                }
+                const readers = entry.readers;
+                if( readers !== null ) readers.push( reader );
+                else notifyReader( reader, entry );
                 return;
             }
 
             const readers = [];
-            registry.set( docLoc, readers );
+            entry = new DocumentCacheEntry( /*document*/null, docLoc, readers );
             readers.push( reader );
+            entryMap.set( docLoc, entry );
 
-          // Configure a document request
-          // ----------------------------
+          // ===================
+          // Configure a request for the document
+          // ===================
             const req = new XMLHttpRequest();
-            req.open( 'GET', docLoc, /*asynchronous*/true ); // Misnomer, opens nothing, only sets config
+            req.open( 'GET', docLoc, /*async*/true ); // Misnomer; opens nothing, only sets config
          // req.overrideMimeType( 'application/xhtml+xml' );
-         /// Still it parses to an XMLDocument (Firefox 52), not to HTML like the present document
+         /// Still it parses to an XMLDocument (Firefox 52), unlike the present document
             req.responseType = 'document';
             req.timeout = docLoc.startsWith('file:')? 2000: 8000; // ms
 
-          // Stand by for the response
-          // -------------------------
+          // ===========
+          // Stand ready to catch the response
+          // ===========
+            req.onabort = ( _event/*ignored*/ ) =>
             {
-                const docReg = new DocumentRegistration( docLoc );
+                console.warn( 'Document request aborted: ' + docLoc );
+            };
+            req.onerror = ( _event/*ignored*/ ) =>
+            {
+                // Parameter *_event* is a ProgressEvent, at least on Firefox,
+                // which contains no useful information on the specific cause of the error.
 
-              // abort
-              // - - -
-                req.onabort = function( e ) { console.warn( 'Document request aborted: ' + docLoc ); }
+                console.warn( 'Document request failed: ' + docLoc );
+            };
+            req.onload = ( event ) =>
+            {
+                const doc = event.target.response;
+                entry.document = doc;
 
-              // error
-              // - - -
-                /** @param e (Event) Unfortunately this is a mere ProgressEvent, at least on Firefox,
-                  *   which contains no useful information on the specific cause of the error.
-                  */
-                req.onerror = function( e ) { console.warn( 'Document request failed: ' + docLoc ); }
-
-              // load
-              // - - -
-                req.onload = function( e )
+              // Normalize *href* attributes
+              // ---------------------------
+                const traversal = doc.createNodeIterator( doc, SHOW_ELEMENT );
+                for( traversal.nextNode()/*onto the document node itself*/;; )
                 {
-                    const doc = e.target.response;
-                    docReg.document = doc;
+                    const t = traversal.nextNode();
+                    if( t === null ) break;
 
-                  // Normalize *href* attributes
-                  // ---------------------------
-                    const traversal = doc.createNodeIterator( doc, SHOW_ELEMENT );
-                    for( traversal.nextNode()/*onto the document node itself*/;; )
-                    {
-                        const t = traversal.nextNode();
-                        if( t === null ) break;
+                    const href = t.getAttributeNS( null, 'href' );
+                    if( href === null ) continue;
 
-                        const href = t.getAttributeNS( null, 'href' );
-                        if( href === null ) continue;
-
-                        const hrefN = URIs.normalized( href, docLoc );
-                        if( hrefN !== href ) t.setAttributeNS( null, 'href', hrefN );
-                    }
-                };
-
-              // load end
-              // - - - - -
-                /** @param e (Event) This is a mere ProgressEvent, at least on Firefox,
-                  *   which itself contains no useful information.
-                  */
-                req.onloadend = function( e )
-                {
-                    // Parameter *e* is a ProgressEvent, which contains no useful information.
-                    // If more information is ever needed, then it might be obtained from req.status,
-                    // or the mere fact of a call to req.error (see listener req.onerror, above).
-
-                  // Register the document
-                  // ---------------------
-                    registry.set( docLoc, docReg );
-
-                  // Notify the waiting readers
-                  // --------------------------
-                    const doc = docReg.document;
-                    for( const r of readers ) notifyReader( r, docReg, doc );
+                    const hrefN = URIs.normalized( href, docLoc );
+                    if( hrefN !== href ) t.setAttributeNS( null, 'href', hrefN );
                 }
+            };
+            req.onloadend = ( _event/*ignored*/ ) =>
+            {
+                // Parameter *_event* is a ProgressEvent, at least on Firefox, which contains
+                // no useful information.  If more information is ever needed, then it might
+                // be obtained from req.status, or the fact of a call to req.onerror, above.
 
-              // time out
-              // - - - - -
-                req.ontimeout = function( e ) { console.warn( 'Document request timed out: ' + docLoc ); }
-            }
+              // Notify the waiting readers
+              // --------------------------
+                const readers = entry.readers;
+                entry.readers = null;
+                for( const r of readers ) notifyReader( r, entry );
+            };
+            req.ontimeout = ( e ) =>
+            {
+                console.warn( 'Document request timed out: ' + docLoc );
+            };
 
+          // ================
           // Send the request
-          // ----------------
+          // ================
             req.send();
         };
 
@@ -535,29 +515,53 @@ console.assert( (eval('var _tmp = null'), typeof _tmp === 'undefined'),
        // - P r i v a t e ------------------------------------------------------------------------------
 
 
-        function notifyReader( r, docReg, doc )
+        /** Map of document entries (DocumentCacheEntry) keyed by DocumentCacheEntry#location.
+          */
+        const entryMap = new Map();
+
+
+
+        function notifyReader( r, entry )
         {
-            if( doc !== null ) r.read( docReg, doc );
-            r.close( docReg );
+            const doc = entry.document;
+            if( doc !== null ) r.read( entry, doc );
+            r.close( entry );
         }
 
 
 
-        const PRESENT_DOCUMENT_REGISTRATION = new DocumentRegistration( DOCUMENT_LOCATION, document );
-
-
-
-        /** Map of pending and complete document registrations, including that of the present document.
-          * The entry key is DocumentRegistration#location.  The value is either the registration itself
-          * or the readers (Array of DocumentReader) that await it.
-          */
-        const registry = new Map().set( DOCUMENT_LOCATION, PRESENT_DOCUMENT_REGISTRATION );
-
-
-
+        entryMap.set( DOCUMENT_LOCATION, // Storing the present document
+          new DocumentCacheEntry( document, DOCUMENT_LOCATION, /*readers*/null ));
         return expo;
 
     }() );
+
+
+
+   // ==================================================================================================
+   //   D o c u m e n t   R e a d e r
+
+
+    /** A reader of documents.
+      */
+    class DocumentReader
+    {
+
+        /** Closes this reader.
+          *
+          *     @param cacheEntry (DocumentCacheEntry)
+          */
+        close( cacheEntry ) {}
+
+
+        /** Reads the document.
+          *
+          *     @param cacheEntry (DocumentCacheEntry)
+          *     @param doc (Document)
+          */
+        read( cacheEntry, doc ) {}
+
+    }
 
 
 
