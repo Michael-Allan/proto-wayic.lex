@@ -224,16 +224,16 @@ console.assert( (eval('var _tmp = null'), typeof _tmp === 'undefined'),
 
 
 
-    /** Resolves each content insertion link within the given target node by replacing it
-      * with the content of its referent.
+    /** Resolves each content insertion link within the given document branch
+      * by replacing it with the content source it links to.
       *
-      *     @param target (Node)
-      *     @param docLoc (string) The target document location in normal URL form.
+      *     @param branch (Element)
+      *     @param docLoc (string) The location of the branch's document in normal URL form.
       */
-    function resolveInsertions( target, docLoc )
+    function resolveInsertions( branch, docLoc )
     {
-        const traversal = document.createNodeIterator( target, SHOW_ELEMENT );
-        for( traversal.nextNode()/*onto the target element itself*/;; )
+        const traversal = document.createNodeIterator( branch, SHOW_ELEMENT );
+        for( traversal.nextNode()/*onto the branch element itself*/;; )
         {
             const t = traversal.nextNode();
             if( t === null ) break;
@@ -253,22 +253,48 @@ console.assert( (eval('var _tmp = null'), typeof _tmp === 'undefined'),
             let sdocLoc = URIs.normalizedByURL( linkURL ); // Location of the source document
             const fragmentLength = linkURL.hash.length; // Which includes the '#' character
             let sourceReader;
+            class SourceReader extends DocumentReader
+            {
+                constructor()
+                {
+                    super();
+                    this.wasContentInserted = false;
+                }
+                close( cacheEntry )
+                {
+                    if( this.wasContentInserted ) return;
+
+                    const p = insertionLink.parentNode;
+                    const message = document.createElementNS( NS_HTML, 'em' );
+                    p.insertBefore( message, insertionLink.nextSibling );
+                    p.insertBefore( document.createTextNode( ' ' ), message );
+                    message.appendChild( document.createTextNode(
+                      'Unable to insert content, attempt failed' ));
+                    message.style.setProperty( 'margin-left', '1em' );
+                }
+            }
             if( fragmentLength > 0 )
             {
                 const c = sdocLoc.length - fragmentLength;
                 const id = sdocLoc.slice( c + 1 );
                 sdocLoc = sdocLoc.slice( 0, c ); // Without fragment
-                sourceReader = new class extends DocumentReader
+                sourceReader = new class extends SourceReader
                 {
                     read( sdocReg, sdoc )
                     {
                         const s = sdoc.getElementById( id );
-                        if( s !== null ) insertFrom( s );
-                        else mal( "Broken content insertion link at '#': No such *id*: " + href );
+                        if( s === null )
+                        {
+                            mal( "Broken content insertion link at '#': No such *id*: " + href );
+                            return;
+                        }
+
+                        insertFrom( s );
+                        this.wasContentInserted = true;
                     }
                 };
             }
-            else sourceReader = new class extends DocumentReader
+            else sourceReader = new class extends SourceReader
             {
                 read( sdocReg, sdoc )
                 {
@@ -284,6 +310,7 @@ console.assert( (eval('var _tmp = null'), typeof _tmp === 'undefined'),
                         if( u.localName === 'body' && u.namespaceURI === NS_HTML )
                         {
                             insertFrom( u );
+                            this.wasContentInserted = true;
                             break;
                         }
                     }
@@ -316,15 +343,8 @@ console.assert( (eval('var _tmp = null'), typeof _tmp === 'undefined'),
 
               // Remove the insertion link, now redundant
               // -------------------------
-                function removeLink() { newParent.removeChild( insertionLink ); }
-             // if( traversal.currentNode !== insertionLink || insertionLink.nextSibling === null )
-             // {
-             //     removeLink();
-             // }
-             // else Promise.resolve().then( removeLink ); // Later, when it will not trap the traversal
-             /// But only a TreeWalker traversal could be trapped in that way, not a NodeIterator
-                console.assert( traversal instanceof NodeIterator, A );
-                removeLink();
+                console.assert( traversal instanceof NodeIterator, AA + 'Traversal is deletion proof' );
+                newParent.removeChild( insertionLink );
             }
         }
     }
