@@ -4,7 +4,7 @@ wayic.lex/doc.task - Documentation in rough
     Content insertion link`
     [ purpose
         - in a word document
-        - to insert content from an external document (the source)
+        - to insert content from a separate document (the source document)
             - which is typically another word document
     [ usage
         - in a word document
