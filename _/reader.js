@@ -5,7 +5,7 @@
   *
   * BASIC USAGE
   * -----------
-  *   This program is for use in word documents that are viewed in a web browser.
+  *   This program is for use in term documents that are viewed in a web browser.
   *   To use it, append the following line to the end of the *body* element:
   *
   *       <script src='http://reluk.ca/project/wayic/lex/_/reader.js'/>
@@ -28,18 +28,18 @@
   *
   *   Requests by ‘file’ scheme
   *   -------------------------
-  *     When the user requests a word document from a ‘file’ scheme URL.
+  *     When the user requests a term document from a ‘file’ scheme URL.
   *
   *     Alert reporting
   *     ---------------
-  *       When the user requests a word document from a ‘file’ scheme URL,
+  *       When the user requests a term document from a ‘file’ scheme URL,
   *       this program assumes that the user is the author of that document.  Then,
   *       in addition to console reporting, it opens an *alert* window to report malformed content
   *       or any other problem that an author might be able to remedy.
   *
   *     Limitations
   *     -----------
-  *       When a Chrome user requests a word document from a ‘file’ scheme URL, any content insertion
+  *       When a Chrome user requests a term document from a ‘file’ scheme URL, any content insertion
   *       link that uses a relative reference will fail to resolve its target (Chrome 65).
   *       The link then forms as a hyperlink, which the user must activate in order to view the content.
   *       Security constraints enforced by the browser are the underlying cause of this limitation.

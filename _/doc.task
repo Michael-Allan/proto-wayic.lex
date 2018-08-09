@@ -3,11 +3,11 @@ wayic.lex/doc.task - Documentation in rough
     ────────────────────────────────────────────────────────────────────────────────────────────────────
     Content insertion link`
     [ purpose
-        - in a word document
+        - in a term document
         - to insert content from a separate document (the source document)
-            - which is typically another word document
+            - which is typically another term document
     [ usage
-        - in a word document
+        - in a term document
         + to insert all content from the source's body
             - here SOURCE-DOC is the URL of the source document:
 
@@ -28,7 +28,7 @@ wayic.lex/doc.task - Documentation in rough
                     ⋯
     [ effect
         - the source content replaces for the content insertion link (hyperlink *a* element)
-          within the rendered view of the word document
+          within the rendered view of the term document
         - should anything go wrong and resolution fail, then:
             - the insertion link remains as a hyperlink to give manual access to the content
     [ yet to be implemented
@@ -44,7 +44,7 @@ wayic.lex/doc.task - Documentation in rough
                 | bookmarklet
                     =< file:/home/mike/work/wayic/lex/
                     -< javascript:(function(){location=(prompt('Path to load?',''))})();
-                        = enter the path to the word document
+                        = enter the path to the term document
 
 
 
