@@ -30,20 +30,6 @@ wayic.lex/doc.task - Documentation in rough
         - the imported content replaces the importer (hyperlink *a* element)
         - should anything go wrong
             - the importer remains as a hyperlink to give manual access to the content
-    [ yet to be implemented
-        - the following have yet to be implemented, pending need
-        + instructions on local viewing of relatively linked content
-            - viz. where:
-                - user's access scheme/protocol is 'file'
-                - *href* is a relative URI
-            - writing the instructions
-                - into _/reader.js § Direct rendering from the file system
-                - after the pattern of the namesake § in wayic.read
-            - instucting on some method such as:
-                | bookmarklet
-                    =< file:/home/mike/work/wayic/lex/
-                    -< javascript:(function(){location=(prompt('Path to load?',''))})();
-                        = enter the path to the term document
 
 
 
