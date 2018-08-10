@@ -10,7 +10,7 @@
   *
   *       <script src='http://reluk.ca/project/wayic/lex/_/reader.js'/>
   *
-  *   For more information, see doc.task § content insertion link § usage.
+  *   For more information, see doc.task § Content importer § usage.
   *
   *
   * ENTRY
@@ -39,9 +39,9 @@
   *
   *     Limitations
   *     -----------
-  *       When a Chrome user requests a term document from a ‘file’ scheme URL, any content insertion
-  *       link that uses a relative reference will fail to resolve its target (Chrome 65).
-  *       The link then forms as a hyperlink, which the user must activate in order to view the content.
+  *       When a Chrome user requests a term document from a ‘file’ scheme URL, any relative *href*
+  *       in a content importer will fail to resolve (Chrome 65).  The importer then defaults to its
+  *       hyperlink form (likely broken), by which the user can manually access the content (or try).
   *       Security constraints enforced by the browser are the underlying cause of this limitation.
   *
   *       A workaround is the Chrome option ‘--allow-file-access-from-files’.
@@ -183,9 +183,9 @@ console.assert( (eval('var _tmp = null'), typeof _tmp === 'undefined'),
 
 
 
-    /** The pattern of token that indicates a content insertion link.  This is a RegExp in form.
+    /** The pattern of token that indicates a content importer.  This is a RegExp in form.
       * Tested against the *rel* attribute of an HTML *a* element, it tells whether the element
-      * is a content insertion link.
+      * is a content importer.
       *
       *     @see RegExp#test
       */
@@ -224,13 +224,25 @@ console.assert( (eval('var _tmp = null'), typeof _tmp === 'undefined'),
 
 
 
-    /** Resolves each content insertion link within the given document branch
-      * by replacing it with the content source it links to.
+    /** The XML namespace of HTML.
+      */
+    const NS_HTML = 'http://www.w3.org/1999/xhtml';
+
+
+
+    /** Runs this program.
+      */
+    function run() { runImports( document.body, DOCUMENT_LOCATION ); }
+
+
+
+    /** Runs the content importers of the given document branch,
+      * trying to replace each with the content it imports.
       *
       *     @param branch (Element)
       *     @param docLoc (string) The location of the branch's document in normal URL form.
       */
-    function resolveInsertions( branch, docLoc )
+    function runImports( branch, docLoc )
     {
         const traversal = document.createNodeIterator( branch, SHOW_ELEMENT );
         for( traversal.nextNode()/*onto the branch element itself*/;; )
@@ -248,28 +260,28 @@ console.assert( (eval('var _tmp = null'), typeof _tmp === 'undefined'),
             const href = t.getAttribute( 'href' );
             if( href === null ) continue;
 
-            const insertionLink = t;
+            const importer = t;
             const linkURL = new URL( href, docLoc );
             let sdocLoc = URIs.normalizedByURL( linkURL ); // Location of the source document
             const fragmentLength = linkURL.hash.length; // Which includes the '#' character
-            let sourceReader;
-            class SourceReader extends DocumentReader
+            let _import;
+            class Import extends DocumentReader
             {
                 constructor()
                 {
                     super();
-                    this.wasContentInserted = false;
+                    this.didImport = false;
                 }
                 close( cacheEntry )
                 {
-                    if( this.wasContentInserted ) return;
+                    if( this.didImport ) return;
 
-                    const p = insertionLink.parentNode;
+                    const p = importer.parentNode;
                     const message = document.createElementNS( NS_HTML, 'em' );
-                    p.insertBefore( message, insertionLink.nextSibling );
+                    p.insertBefore( message, importer.nextSibling );
                     p.insertBefore( document.createTextNode( ' ' ), message );
                     message.appendChild( document.createTextNode(
-                      'Unable to insert content, attempt failed' ));
+                      'Unable to import content, attempt failed' ));
                     message.style.setProperty( 'margin-left', '1em' );
                 }
             }
@@ -278,23 +290,23 @@ console.assert( (eval('var _tmp = null'), typeof _tmp === 'undefined'),
                 const c = sdocLoc.length - fragmentLength;
                 const id = sdocLoc.slice( c + 1 );
                 sdocLoc = sdocLoc.slice( 0, c ); // Without fragment
-                sourceReader = new class extends SourceReader
+                _import = new class extends Import
                 {
                     read( sdocReg, sdoc )
                     {
                         const s = sdoc.getElementById( id );
                         if( s === null )
                         {
-                            mal( "Broken content insertion link at '#': No such *id*: " + href );
+                            mal( "Broken content importer at '#': No such *id*: " + href );
                             return;
                         }
 
-                        insertFrom( s );
-                        this.wasContentInserted = true;
+                        importFrom( s );
+                        this.didImport = true;
                     }
                 };
             }
-            else sourceReader = new class extends SourceReader
+            else _import = new class extends Import
             {
                 read( sdocReg, sdoc )
                 {
@@ -303,32 +315,32 @@ console.assert( (eval('var _tmp = null'), typeof _tmp === 'undefined'),
                     {
                         if( u === null )
                         {
-                            mal( 'Broken content insertion link: No *body* element: ' + href );
+                            mal( 'Broken content importer: No *body* element: ' + href );
                             break;
                         }
 
                         if( u.localName === 'body' && u.namespaceURI === NS_HTML )
                         {
-                            insertFrom( u );
-                            this.wasContentInserted = true;
+                            importFrom( u );
+                            this.didImport = true;
                             break;
                         }
                     }
                 }
             };
-            DocumentCache.readNowOrLater( sdocLoc, sourceReader );
-            function insertFrom( sdocSourceElement )
+            DocumentCache.readNowOrLater( sdocLoc, _import );
+            function importFrom( sdocSourceElement )
             {
-              // Import the source element, the parent of the content to insert
-              // -------------------------
+              // Import to the present document the source element, parent of the content
+              // ------------------------------
                 const oldParent = document.importNode( sdocSourceElement, /*deeply*/true );
-                const newParent = insertionLink.parentNode;
+                const newParent = importer.parentNode;
 
-              // Resolve any insertions it contains
-              // ----------------------
-                resolveInsertions( oldParent, sdocLoc );
+              // Run any imported importers
+              // --------------------------
+                runImports( oldParent, sdocLoc );
 
-              // Insert its content
+              // Insert the content
               // ------------------
                 while( oldParent.hasChildNodes() )
                 {
@@ -338,28 +350,16 @@ console.assert( (eval('var _tmp = null'), typeof _tmp === 'undefined'),
                         oldParent.removeChild( c );
                           // Avoiding a rerun of any program, including the present program
                     }
-                    else newParent.insertBefore( c, insertionLink ); // Before, ∴ not traversed again
+                    else newParent.insertBefore( c, importer ); // Before, ∴ not traversed again
                 }
 
-              // Remove the insertion link, now redundant
-              // -------------------------
+              // Remove the importer, now redundant
+              // -------------------
                 console.assert( traversal instanceof NodeIterator, AA + 'Traversal is deletion proof' );
-                newParent.removeChild( insertionLink );
+                newParent.removeChild( importer );
             }
         }
     }
-
-
-
-    /** The XML namespace of HTML.
-      */
-    const NS_HTML = 'http://www.w3.org/1999/xhtml';
-
-
-
-    /** Runs this program.
-      */
-    function run() { resolveInsertions( document.body, DOCUMENT_LOCATION ); }
 
 
 
