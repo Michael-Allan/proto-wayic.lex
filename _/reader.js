@@ -262,7 +262,7 @@ console.assert( (eval('var _tmp = null'), typeof _tmp === 'undefined'),
 
             const importer = t;
             const linkURL = new URL( href, docLoc );
-            let sdocLoc = URIs.normalizedByURL( linkURL ); // Location of the source document
+            let exDocLoc = URIs.normalizedByURL( linkURL ); // Location of the exporting document
             const fragmentLength = linkURL.hash.length; // Which includes the '#' character
             let _import;
             class Import extends DocumentReader
@@ -287,14 +287,14 @@ console.assert( (eval('var _tmp = null'), typeof _tmp === 'undefined'),
             }
             if( fragmentLength > 0 )
             {
-                const c = sdocLoc.length - fragmentLength;
-                const id = sdocLoc.slice( c + 1 );
-                sdocLoc = sdocLoc.slice( 0, c ); // Without fragment
+                const c = exDocLoc.length - fragmentLength;
+                const id = exDocLoc.slice( c + 1 );
+                exDocLoc = exDocLoc.slice( 0, c ); // Without fragment
                 _import = new class extends Import
                 {
-                    read( sdocReg, sdoc )
+                    read( exDocReg, exDoc )
                     {
-                        const s = sdoc.getElementById( id );
+                        const s = exDoc.getElementById( id );
                         if( s === null )
                         {
                             mal( "Broken content importer at '#': No such *id*: " + href );
@@ -308,9 +308,9 @@ console.assert( (eval('var _tmp = null'), typeof _tmp === 'undefined'),
             }
             else _import = new class extends Import
             {
-                read( sdocReg, sdoc )
+                read( exDocReg, exDoc )
                 {
-                    const traversal = sdoc.createTreeWalker( sdoc.documentElement, SHOW_ELEMENT );
+                    const traversal = exDoc.createTreeWalker( exDoc.documentElement, SHOW_ELEMENT );
                     for( let u = traversal.nextNode();; u = traversal.nextSibling() )
                     {
                         if( u === null )
@@ -328,17 +328,17 @@ console.assert( (eval('var _tmp = null'), typeof _tmp === 'undefined'),
                     }
                 }
             };
-            DocumentCache.readNowOrLater( sdocLoc, _import );
-            function importFrom( sdocSourceElement )
+            DocumentCache.readNowOrLater( exDocLoc, _import );
+            function importFrom( exporter )
             {
-              // Import to the present document the source element, parent of the content
+              // Import to the present document the exporter, parent of the content to import
               // ------------------------------
-                const oldParent = document.importNode( sdocSourceElement, /*deeply*/true );
+                const oldParent = document.importNode( exporter, /*deeply*/true );
                 const newParent = importer.parentNode;
 
               // Run any imported importers
               // --------------------------
-                runImports( oldParent, sdocLoc );
+                runImports( oldParent, exDocLoc );
 
               // Insert the content
               // ------------------
