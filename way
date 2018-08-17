@@ -15,28 +15,28 @@
             <!-- from http://reluk.ca/project/waycast/engineer/wayics/way.xht#way_defined -->
             </li>
         </ul>
-    </section>
-<section      id='off_way'>
-    <h2><a href='#off_way'>
-                  off way</a></h2>
-    <ul>
-        <li>
-            not on way
-            </li>
-        </ul>
-    </section>
-<section      id='on_way'>
-    <h2><a href='#on_way'>
-                  on way</a></h2>
-    <ul>
-        <li>
-            (of a <a href='http://reluk.ca/project/wayic/script/wayscript_element'>
-            wayscript element</a>) descending from
-            the <a href='http://reluk.ca/project/wayic/cast/root#root_element'>root element</a>
-            after all <a href='http://reluk.ca/project/wayic/script/referential_joint'>
-            referential joints</a> are resolved
-            </li>
-        </ul>
+    <section      id='off_way'>
+        <h3><a href='#off_way'>
+                      off way</a></h3>
+        <ul>
+            <li>
+                not <a href='#on_way'>on way</a>
+                </li>
+            </ul>
+        </section>
+    <section      id='on_way'>
+        <h3><a href='#on_way'>
+                      on way</a></h3>
+        <ul>
+            <li>
+                (of a <a href='http://reluk.ca/project/wayic/script/wayscript_element'>
+                wayscript element</a>) being the <a href='http://reluk.ca/project/wayic/cast/waycast_root'>
+                waycast root</a> or descending from the waycast root
+                after all <a href='http://reluk.ca/project/wayic/script/referential_joint'>
+                referential joints</a> are resolved
+                </li>
+            </ul>
+        </section>
     </section>
 
 
