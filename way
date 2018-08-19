@@ -30,8 +30,9 @@
         <ul>
             <li>
                 (of a <a href='http://reluk.ca/project/wayic/script/wayscript_element'>
-                wayscript element</a>) being the <a href='http://reluk.ca/project/wayic/cast/waycast_root'>
-                waycast root</a> or descending from the waycast root
+                wayscript element</a>)
+                being the <a href='http://reluk.ca/project/wayic/cast/waycast_root_element'>
+                waycast root element</a> or descending from the waycast root element
                 after all <a href='http://reluk.ca/project/wayic/script/referential_joint'>
                 referential joints</a> are resolved
                 </li>
