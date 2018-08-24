@@ -6,9 +6,7 @@
     <body>
 
 
-<section      id='way'>
-    <h2><a href='#way'>
-                  way</a></h2>
+<section                                                        id='way'>
     <a rel='content-repository' href='http://reluk.ca/project/wayic/way#way'>content</a>
     </section>
 <section id='xrefs' style='border-top:thin solid'>
