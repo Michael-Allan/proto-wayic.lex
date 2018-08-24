@@ -4,7 +4,27 @@
         <title>‘root’</title>
         </head>
     <body>
-        <a rel='content-repository' href='http://reluk.ca/project/wayic/cast/root'>content</a>
+
+
+<section id='root'>
+    <h2>     root</h2>
+    </section>
+<section id='xrefs' style='border-top:thin solid'>
+    <section id=                                   'waycast_root_directory'>
+        <a href='http://reluk.ca/project/wayic/cast/waycast_root_directory#waycast_root_directory'
+          rel='content-repository'>content</a>
+        </section>
+    <section id=                                   'way_root_document'>
+        <a href='http://reluk.ca/project/wayic/cast/way_root_document#way_root_document'
+          rel='content-repository'>content</a>
+        </section>
+    <section id=                                     'way_root_element'>
+        <a href='http://reluk.ca/project/wayic/script/way_root_element#way_root_element'
+          rel='content-repository'>content</a>
+        </section>
+    </section>
+
+
         <script src='_/reader.js'/>
         </body>
     </html>

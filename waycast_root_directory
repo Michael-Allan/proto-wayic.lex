@@ -1,11 +1,11 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <html xml:lang='en-CA' xmlns='http://www.w3.org/1999/xhtml'>
     <head>
-        <title>‘waycast root document’</title>
+        <title>‘waycast root directory’</title>
         </head>
     <body>
         <a rel='content-repository'
-          href='http://reluk.ca/project/wayic/cast/waycast_root_document'>content</a>
+          href='http://reluk.ca/project/wayic/cast/waycast_root_directory'>content</a>
         <script src='_/reader.js'/>
         </body>
     </html>
