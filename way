@@ -9,37 +9,24 @@
 <section      id='way'>
     <h2><a href='#way'>
                   way</a></h2>
-    <ul>
-        <li>
-            a personal goal, especially a final or endmost goal, and the chosen means of getting there
-            <!-- from http://reluk.ca/project/waycast/_institute_truly.xht#way_defined -->
-            </li>
-        </ul>
-    <section      id='off_way'>
-        <h3><a href='#off_way'>
-                      off way</a></h3>
-        <ul>
-            <li>
-                not <a href='#on_way'>on way</a>
-                </li>
-            </ul>
+    <a rel='content-repository' href='http://reluk.ca/project/wayic/way#way'>content</a>
+    </section>
+<section id='xrefs' style='border-top:thin solid'>
+    <section id=                                     'off_way'>
+        <a href='http://reluk.ca/project/wayic/script/off_way#off_way'
+          rel='content-repository'>content</a>
         </section>
-    <section      id='on_way'>
-        <h3><a href='#on_way'>
-                      on way</a></h3>
-        <ul>
-            <li>
-                (of a <a href='http://reluk.ca/project/wayic/script/wayscript_element'>
-                wayscript element</a>)
-                being the <a href='http://reluk.ca/project/wayic/cast/waycast_root_element'>
-                waycast root element</a> or descending from the waycast root element
-                after all <a href='http://reluk.ca/project/wayic/script/referential_joint'>
-                referential joints</a> are resolved
-                </li>
-            </ul>
+    <section id=                                     'on_way'>
+        <a href='http://reluk.ca/project/wayic/script/on_way#on_way'
+          rel='content-repository'>content</a>
+        </section>
+    <section id=                              'personal_way_declaration'>
+        <a href='http://reluk.ca/project/wayic/personal_way_declaration#personal_way_declaration'
+          rel='content-repository'>content</a>
         </section>
     </section>
 
 
+        <script src='_/reader.js'/>
         </body>
     </html>
