@@ -40,10 +40,10 @@
   *     Limitations
   *     -----------
   *       When a Chrome user requests a term document from a ‘file’ scheme URL, any relative *href*
-  *       in a content importer will fail to resolve (Chrome 65).  The importer then defaults to its
-  *       hyperlink form (likely broken), by which the user can manually access the content (or try).
-  *       Security constraints enforced by the browser are the underlying cause of this limitation.
+  *       in a content importer will fail (Chrome 65).  The importer will then stay in its default,
+  *       hyperlink form, allowing the user to attempt manual access to the content.
   *
+  *       Security constraints enforced by the browser are the underlying cause of such failures.
   *       A workaround is the Chrome option ‘--allow-file-access-from-files’.
   *       [AFA in http://reluk.ca/project/wayic/read/readable.css]
   *
