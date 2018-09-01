@@ -131,9 +131,13 @@ console.assert( (eval('var _tmp = null'), typeof _tmp === 'undefined'),
 
 
 
-        /** Returns a message that the given URI is not in normal form.
+        /** Returns a message (string) that the given URI reference is not in normal form.
+          *
+          *     @param ref (string)
+          *     @see #normalized
           */
-        expo.message_abnormal = function( uri ) { return 'Not in normal form:' + uri; };
+        expo.makeMessage_abnormal = function( ref ) { return 'Not in normal form: ' + ref; };
+          // Changing?  sync'd ← http://reluk.ca/project/wayic/read/readable.js
 
 
 
@@ -150,6 +154,7 @@ console.assert( (eval('var _tmp = null'), typeof _tmp === 'undefined'),
           *     @throw Error if *ref* is relative and *base* is undefined.
           */
         expo.normalized = function( ref, base ) { return expo.normalizedByURL( new URL( ref, base )); };
+          // Changing?  partly sync'd ← http://reluk.ca/project/wayic/read/readable.js
 
 
 
@@ -447,7 +452,7 @@ console.assert( (eval('var _tmp = null'), typeof _tmp === 'undefined'),
           */
         expo.readNowOrLater = function( docLoc, reader )
         {
-            if( URIs.isDetectedAbnormal( docLoc )) throw URIs.message_abnormal( docLoc );
+            if( URIs.isDetectedAbnormal( docLoc )) throw URIs.makeMessage_abnormal( docLoc );
 
             let entry = entryMap.get( docLoc );
             if( entry !== undefined ) // Then the document was already requested
