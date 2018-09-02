@@ -100,24 +100,42 @@ console.assert( (eval('var _tmp = null'), typeof _tmp === 'undefined'),
 
         const expo = {}; // The public interface of URIs
 
+        // Changing?  sync'd ← http://reluk.ca/project/wayic/read/readable.js
 
 
-        /** Returns the same URI, but without a fragment.
+
+        /** Returns the absolute form of the given URI.
+          *
+          *     @param uri (string)
+          *
+          *     @see Absolute URI, https://tools.ietf.org/html/rfc3986#section-4.3
+          *     @see #defragmented
           */
-        expo.defragmented = function( uri )
+        expo.absolute = function( uri )
         {
-            // Changing?  sync'd ← http://reluk.ca/project/wayic/read/readable.js
             const c = uri.lastIndexOf( '#' );
-            if( c >= 0 ) uri = uri.slice( 0, c );
+            if( c >= 0 ) uri = uri.slice( 0, c ); // Defragmented
             return uri;
         };
 
 
 
-        /** Answers whether the given URI is detected to have an abnormal form,
-          * where such detection depends on whether *toEnforceCostlyConstraints*.
+        /** Returns the same basic URI, but without a fragment.
+          * This function is a convenience, a descriptive alias of *absolute*.
           *
-          *     @see #normalize
+          *     @param uri (string)
+          */
+        expo.defragmented = function( uri ) { return expo.absolute( uri ); }
+
+
+
+        /** Answers whether the given URI is detected to have an abnormal form,
+          * with any detection depending also on whether *toEnforceConstraints*.
+          *
+          *     @param uri (string)
+          *     @return (boolean)
+          *
+          *     @see #normalized
           */
         expo.isDetectedAbnormal = function( uri )
         {
@@ -137,30 +155,38 @@ console.assert( (eval('var _tmp = null'), typeof _tmp === 'undefined'),
           *     @see #normalized
           */
         expo.makeMessage_abnormal = function( ref ) { return 'Not in normal form: ' + ref; };
-          // Changing?  sync'd ← http://reluk.ca/project/wayic/read/readable.js
 
 
 
-        /** Returns the full form, normalized equivalent of the given URI reference.
-          * This is a convenience function.  If you already have an instance of URL,
-          * then a direct call to *normalizedByURL* will be more efficient.
+        /** Returns the normalized URI equivalent of the given URI reference.
+          * See: Normalization and comparison, https://tools.ietf.org/html/rfc3986#section-6
           *
-          *     @param ref (string) The URI reference.
-          *       See https://tools.ietf.org/html/rfc3986#section-4.1, URI-reference
-          *     @param base (string, optional unless *ref* is relative)
-          *       See https://tools.ietf.org/html/rfc3986#section-5.1, base URI
+          * This is a convenience function.  If you already have an instance of URL,
+          * then a direct call to *normalizedFromURL* will be simpler and more efficient.
+          *
+          *     @param ref (string) A URI reference.
+          *       See: URI-reference, https://tools.ietf.org/html/rfc3986#section-4.1
+          *     @param base (string, optional unless *ref* is relative) The base URI.
+          *       See: Establishing a base URI, https://tools.ietf.org/html/rfc3986#section-5.1
           *
           *     @return (string)
+          *
           *     @throw Error if *ref* is relative and *base* is undefined.
           */
-        expo.normalized = function( ref, base ) { return expo.normalizedByURL( new URL( ref, base )); };
-          // Changing?  partly sync'd ← http://reluk.ca/project/wayic/read/readable.js
+        expo.normalized = function( ref, base )
+        {
+            return expo.normalizedFromURL( new URL( ref, base )); // [UAU]
+        };
 
 
 
-        /** Returns the normalized URI (string) formed by the given instance of URL.
+        /** Returns the normalized URI equivalent of the given instance of URL.
+          *
+          *     @param iURL (URL) An instance of URL from the URL API. [UAU]
+          *       https://url.spec.whatwg.org/
+          *     @return (string) The normalized URI equivalent.
           */
-        expo.normalizedByURL = function( u ) { return u.href; };
+        expo.normalizedFromURL = function( iURL ) { return iURL.href; };
 
 
 
@@ -208,9 +234,7 @@ console.assert( (eval('var _tmp = null'), typeof _tmp === 'undefined'),
     const DOCUMENT_LOCATION = ( ()=>
     {
         // Changing?  sync'd ← http://reluk.ca/project/wayic/read/readable.js
-        const wloc = window.location; // [WDL]
-        let loc = wloc.toString();
-        if( wloc.hash ) loc = URIs.defragmented( loc );
+        const loc = URIs.defragmented( location.toString() ); // [WDL]
         return URIs.normalized( loc ); // To be certain
     })();
 
@@ -267,7 +291,7 @@ console.assert( (eval('var _tmp = null'), typeof _tmp === 'undefined'),
 
             const importer = t;
             const linkURL = new URL( href, docLoc );
-            let exDocLoc = URIs.normalizedByURL( linkURL ); // Location of the exporting document
+            let exDocLoc = URIs.normalizedFromURL( linkURL ); // Location of the exporting document
             const fragmentLength = linkURL.hash.length; // Which includes the '#' character
             let _import;
             class Import extends DocumentReader
@@ -598,8 +622,12 @@ console.assert( (eval('var _tmp = null'), typeof _tmp === 'undefined'),
 }() );
 
 
-/** NOTE
+/** NOTES
   * ----
+  *  [UAU]  The URL API for all URIs?  Yes, the URL API applies to URIs in general.  "In practice
+  *         a single algorithm is used for both".  It might equally have been called the "URI API".
+  *         https://url.spec.whatwg.org/#goals
+  *
   *  [WDL]  Either 'document.location' or 'window.location', they are identical.
   *         https://www.w3.org/TR/html5/browsers.html#the-location-interface
   */
