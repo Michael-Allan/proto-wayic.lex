@@ -28,18 +28,18 @@
   *
   *   Requests by ‘file’ scheme
   *   -------------------------
-  *     When the user requests a term document from a ‘file’ scheme URL.
+  *     When the user requests a term document from a ‘file’ scheme URI.
   *
   *     Alert reporting
   *     ---------------
-  *       When the user requests a term document from a ‘file’ scheme URL,
+  *       When the user requests a term document from a ‘file’ scheme URI,
   *       this program assumes that the user is the author of that document.  Then,
   *       in addition to console reporting, it opens an *alert* window to report malformed content
   *       or any other problem that an author might be able to remedy.
   *
   *     Limitations
   *     -----------
-  *       When a Chrome user requests a term document from a ‘file’ scheme URL, any relative *href*
+  *       When a Chrome user requests a term document from a ‘file’ scheme URI, any relative *href*
   *       in a content importer will fail (Chrome 65).  The importer will then stay in its default,
   *       hyperlink form, allowing the user to attempt manual access to the content.
   *
@@ -64,7 +64,7 @@ console.assert( (eval('var _tmp = null'), typeof _tmp === 'undefined'),
 /// ====================================================================================================
 
 
-    /** Whether the present document was requested from a 'file' scheme URL.
+    /** Whether the present document was requested from a 'file' scheme URI.
       */
     const wasRequestFileSchemed = document.URL.startsWith( 'file:' );
 
@@ -158,7 +158,7 @@ console.assert( (eval('var _tmp = null'), typeof _tmp === 'undefined'),
 
 
 
-        /** Returns the normalized URI equivalent of the given URI reference.
+        /** Returns the normal form of the given URI reference.
           * See: Normalization and comparison, https://tools.ietf.org/html/rfc3986#section-6
           *
           * This is a convenience function.  If you already have an instance of URL,
@@ -180,11 +180,12 @@ console.assert( (eval('var _tmp = null'), typeof _tmp === 'undefined'),
 
 
 
-        /** Returns the normalized URI equivalent of the given instance of URL.
+        /** Transforms the given instance of *URL* to a URI in normal form.
+          * See: Normalization and comparison, https://tools.ietf.org/html/rfc3986#section-6
           *
-          *     @param iURL (URL) An instance of URL from the URL API. [UAU]
+          *     @param iURL (URL) An instance of *URL* from the URL API. [UAU]
           *       https://url.spec.whatwg.org/
-          *     @return (string) The normalized URI equivalent.
+          *     @return (string)
           */
         expo.normalizedFromURL = function( iURL ) { return iURL.href; };
 
@@ -227,7 +228,7 @@ console.assert( (eval('var _tmp = null'), typeof _tmp === 'undefined'),
 
 
 
-    /** The location of present document (string) in normal URL form.
+    /** The location of present document (string) in normal URI form.
       *
       *     @see URIs#normalized
       */
@@ -269,7 +270,9 @@ console.assert( (eval('var _tmp = null'), typeof _tmp === 'undefined'),
       * trying to replace each with the content it imports.
       *
       *     @param branch (Element)
-      *     @param docLoc (string) The location of the branch's document in normal URL form.
+      *     @param docLoc (string) The location of the branch's document in normal URI form.
+      *
+      *     @see URIs#normalized
       */
     function runImports( branch, docLoc )
     {
@@ -430,7 +433,7 @@ console.assert( (eval('var _tmp = null'), typeof _tmp === 'undefined'),
 
 
 
-            /** The location of the document in normal URL form.
+            /** The location of the document in normal URI form.
               *
               *     @return (string)
               *     @see URIs#normalized
@@ -469,7 +472,7 @@ console.assert( (eval('var _tmp = null'), typeof _tmp === 'undefined'),
           * Otherwise this function starts a storage process and returns.  If the process eventually
           * succeeds, then it calls reader.read.  Regardless it ends by calling reader.close.
           *
-          *     @param docLoc (string) The document location in normal URL form.
+          *     @param docLoc (string) The document location in normal URI form.
           *     @param reader (DocumentReader)
           *
           *     @see URIs#normalized
