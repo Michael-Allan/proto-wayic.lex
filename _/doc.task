@@ -1,5 +1,32 @@
 wayic.lex/doc.task - Documentation in rough
 
+    + scope
+        - the scope of this dictionary is the terminology of general wayics
+            ( ./wayics
+            - and of the present wayic in particular
+                ( ./wayic
+        - notably some wayic.web terms are general enough to transcend the scope
+          and are excluded from the dictionary
+            ( http://reluk.ca/project/wayic/web/
+    + language
+        - Canadian English is the language of this dictionary
+            - and the default language
+                ( except where marked otherwise, that is
+            - of its wayic co-projects
+        - why
+            - readership
+                - English is the most accessible language to the expected readership
+                    - which is dominated by IT specialists who perforce know English
+            - authorship
+                - the wayic authorship is predominantly English Canadian at present
+            - compromise
+                - no particular form of English is generally accepted as a universal standard
+                    - therefore any formal choice will necessarily be a compromise
+                - as a compromise, the Canadian form has advantages
+                    - it happens (roughly) to reflect the present balance
+                      between the two dominant forms of US American and British English
+                    - it is well documented
+
     ────────────────────────────────────────────────────────────────────────────────────────────────────
     Content importer`
     [ purpose
