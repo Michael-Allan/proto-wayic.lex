@@ -104,45 +104,45 @@ console.assert( (eval('var _tmp = null'), typeof _tmp === 'undefined'),
 
 
 
-        /** Returns the absolute form of the given URI.
+        /** Returns the absolute form of the given URI reference; without a fragment, that is.
           *
-          *     @param uri (string)
+          *     @param ref (string)
           *
           *     @see Absolute URI, https://tools.ietf.org/html/rfc3986#section-4.3
           *     @see #defragmented
           */
-        expo.absolute = function( uri )
+        expo.absolute = function( ref )
         {
-            const c = uri.lastIndexOf( '#' );
-            if( c >= 0 ) uri = uri.slice( 0, c ); // Defragmented
-            return uri;
+            const c = ref.lastIndexOf( '#' );
+            if( c >= 0 ) ref = ref.slice( 0, c ); // Defragmented
+            return ref;
         };
 
 
 
-        /** Returns the same basic URI, but without a fragment.
+        /** Returns the same basic URI reference, but without a fragment.
           * This function is a convenience, a descriptive alias of *absolute*.
           *
-          *     @param uri (string)
+          *     @param ref (string)
           */
-        expo.defragmented = function( uri ) { return expo.absolute( uri ); }
+        expo.defragmented = function( ref ) { return expo.absolute( ref ); }
 
 
 
-        /** Answers whether the given URI is detected to have an abnormal form,
+        /** Answers whether the given URI reference is detected to have an abnormal form,
           * with any detection depending also on whether *toEnforceConstraints*.
           *
-          *     @param uri (string)
+          *     @param ref (string)
           *     @return (boolean)
           *
           *     @see #normalized
           */
-        expo.isDetectedAbnormal = function( uri )
+        expo.isDetectedAbnormal = function( ref )
         {
-            if( toEnforceCostlyConstraints )
+            if( toEnforceConstraints )
             {
-                try{ return uri !== expo.normalized(uri) }
-                catch( x ) { console.warn( 'Suppressed exception: ' + x ); } // E.g. if *uri* relative
+                try{ return ref !== expo.normalized(ref) }
+                catch( x ) { console.warn( 'Suppressed exception: ' + x ); } // E.g. if *ref* relative
             }
             return false;
         };
