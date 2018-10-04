@@ -158,36 +158,42 @@ console.assert( (eval('var _tmp = null'), typeof _tmp === 'undefined'),
 
 
 
-        /** Returns the normal form of the given URI reference.
-          * See: Normalization and comparison, https://tools.ietf.org/html/rfc3986#section-6
+        /** Returns the normal form of the given URI reference,
+          * which is generally adequate to compare references for equivalence.
           *
           * This is a convenience function.  If you already have an instance of URL,
-          * then a direct call to *normalizedFromURL* will be simpler and more efficient.
+          * then a direct call to *normalizedU* will be simpler and more efficient.
           *
           *     @param ref (string) A URI reference.
           *       See: URI-reference, https://tools.ietf.org/html/rfc3986#section-4.1
           *     @param base (string, optional unless *ref* is relative) The base URI.
           *       See: Establishing a base URI, https://tools.ietf.org/html/rfc3986#section-5.1
           *
-          *     @return (string)
-          *
           *     @throw Error if *ref* is relative and *base* is undefined.
+          *
+          *     @return (string)
+          *     @see Normalization and comparison, https://tools.ietf.org/html/rfc3986#section-6
           */
         expo.normalized = function( ref, base )
         {
-            return expo.normalizedFromURL( new URL( ref, base )); // [UAU]
+            return expo.normalizedU( new URL( ref, base )); // [UAU]
         };
 
 
 
-        /** Transforms the given instance of *URL* to a URI in normal form.
-          * See: Normalization and comparison, https://tools.ietf.org/html/rfc3986#section-6
+        /** Returns the normal form of the given URI reference,
+          * which is generally adequate to compare references for equivalence.
           *
-          *     @param iURL (URL) An instance of *URL* from the URL API. [UAU]
+          *     @param refU (URL) An instance of *URL* from the URL API. [UAU]
           *       https://url.spec.whatwg.org/
+          *
           *     @return (string)
+          *     @see Normalization and comparison, https://tools.ietf.org/html/rfc3986#section-6
           */
-        expo.normalizedFromURL = function( iURL ) { return iURL.href; };
+        expo.normalizedU = function( refU ) { return refU.href; };
+          // URL.href is the same "serialization" by which the URL API determines equivalence.
+          // https://url.spec.whatwg.org/#dom-url-href
+          // https://url.spec.whatwg.org/#url-equivalence
 
 
 
@@ -232,11 +238,11 @@ console.assert( (eval('var _tmp = null'), typeof _tmp === 'undefined'),
       *
       *     @see URIs#normalized
       */
-    const DOCUMENT_LOCATION = ( ()=>
+    const DOCUMENT_URI = ( ()=>
     {
         // Changing?  sync'd ← http://reluk.ca/project/wayic/read/readable.js
-        const loc = URIs.defragmented( location.toString() ); // [WDL]
-        return URIs.normalized( loc ); // To be certain
+        const ref = URIs.defragmented( location.toString() ); // [WDL]
+        return URIs.normalized( ref ); // To be certain
     })();
 
 
@@ -262,7 +268,7 @@ console.assert( (eval('var _tmp = null'), typeof _tmp === 'undefined'),
 
     /** Runs this program.
       */
-    function run() { runImports( document.body, DOCUMENT_LOCATION ); }
+    function run() { runImports( document.body, DOCUMENT_URI ); }
 
 
 
@@ -270,11 +276,11 @@ console.assert( (eval('var _tmp = null'), typeof _tmp === 'undefined'),
       * trying to replace each with the content it imports.
       *
       *     @param branch (Element)
-      *     @param docLoc (string) The location of the branch's document in normal URI form.
+      *     @param docUri (string) The location of the branch's document in normal URI form.
       *
       *     @see URIs#normalized
       */
-    function runImports( branch, docLoc )
+    function runImports( branch, docUri )
     {
         const traversal = document.createNodeIterator( branch, SHOW_ELEMENT );
         for( traversal.nextNode()/*onto the branch element itself*/;; )
@@ -293,9 +299,9 @@ console.assert( (eval('var _tmp = null'), typeof _tmp === 'undefined'),
             if( href === null ) continue;
 
             const importer = t;
-            const linkURL = new URL( href, docLoc );
-            let exDocLoc = URIs.normalizedFromURL( linkURL ); // Location of the exporting document
-            const fragmentLength = linkURL.hash.length; // Which includes the '#' character
+            const linkU = new URL( href, docUri );
+            let exDocURI = URIs.normalizedU( linkU ); // Location of the exporting document
+            const fragmentLength = linkU.hash.length; // Which includes the '#' character
             let _import;
             class Import extends DocumentReader
             {
@@ -319,9 +325,9 @@ console.assert( (eval('var _tmp = null'), typeof _tmp === 'undefined'),
             }
             if( fragmentLength > 0 )
             {
-                const c = exDocLoc.length - fragmentLength;
-                const id = exDocLoc.slice( c + 1 );
-                exDocLoc = exDocLoc.slice( 0, c ); // Without fragment
+                const c = exDocURI.length - fragmentLength;
+                const id = exDocURI.slice( c + 1 );
+                exDocURI = exDocURI.slice( 0, c ); // Without fragment
                 _import = new class extends Import
                 {
                     read( exDocReg, exDoc )
@@ -360,7 +366,7 @@ console.assert( (eval('var _tmp = null'), typeof _tmp === 'undefined'),
                     }
                 }
             };
-            DocumentCache.readNowOrLater( exDocLoc, _import );
+            DocumentCache.readNowOrLater( exDocURI, _import );
             function importFrom( exporter )
             {
               // Import to the present document the exporter, parent of the content to import
@@ -370,7 +376,7 @@ console.assert( (eval('var _tmp = null'), typeof _tmp === 'undefined'),
 
               // Run any imported importers
               // --------------------------
-                runImports( oldParent, exDocLoc );
+                runImports( oldParent, exDocURI );
 
               // Insert the content
               // ------------------
@@ -472,16 +478,16 @@ console.assert( (eval('var _tmp = null'), typeof _tmp === 'undefined'),
           * Otherwise this function starts a storage process and returns.  If the process eventually
           * succeeds, then it calls reader.read.  Regardless it ends by calling reader.close.
           *
-          *     @param docLoc (string) The document location in normal URI form.
+          *     @param docUri (string) The document location in normal URI form.
           *     @param reader (DocumentReader)
           *
           *     @see URIs#normalized
           */
-        expo.readNowOrLater = function( docLoc, reader )
+        expo.readNowOrLater = function( docUri, reader )
         {
-            if( URIs.isDetectedAbnormal( docLoc )) throw URIs.makeMessage_abnormal( docLoc );
+            if( URIs.isDetectedAbnormal( docUri )) throw URIs.makeMessage_abnormal( docUri );
 
-            let entry = entryMap.get( docLoc );
+            let entry = entryMap.get( docUri );
             if( entry !== undefined ) // Then the document was already requested
             {
                 const readers = entry.readers;
@@ -491,33 +497,33 @@ console.assert( (eval('var _tmp = null'), typeof _tmp === 'undefined'),
             }
 
             const readers = [];
-            entry = new DocumentCacheEntry( /*document*/null, docLoc, readers );
+            entry = new DocumentCacheEntry( /*document*/null, docUri, readers );
             readers.push( reader );
-            entryMap.set( docLoc, entry );
+            entryMap.set( docUri, entry );
 
           // ===================
           // Configure a request for the document
           // ===================
             const req = new XMLHttpRequest();
-            req.open( 'GET', docLoc, /*async*/true ); // Misnomer; opens nothing, only sets config
+            req.open( 'GET', docUri, /*async*/true ); // Misnomer; opens nothing, only sets config
          // req.overrideMimeType( 'application/xhtml+xml' );
          /// Still it parses to an XMLDocument (Firefox 52), unlike the present document
             req.responseType = 'document';
-            req.timeout = docLoc.startsWith('file:')? 2000: 8000; // ms
+            req.timeout = docUri.startsWith('file:')? 2000: 8000; // ms
 
           // ===========
           // Stand ready to catch the response
           // ===========
             req.onabort = ( _event/*ignored*/ ) =>
             {
-                console.warn( 'Document request aborted: ' + docLoc );
+                console.warn( 'Document request aborted: ' + docUri );
             };
             req.onerror = ( _event/*ignored*/ ) =>
             {
                 // Parameter *_event* is a ProgressEvent, at least on Firefox,
                 // which contains no useful information on the specific cause of the error.
 
-                console.warn( 'Document request failed: ' + docLoc );
+                console.warn( 'Document request failed: ' + docUri );
             };
             req.onload = ( event ) =>
             {
@@ -535,7 +541,7 @@ console.assert( (eval('var _tmp = null'), typeof _tmp === 'undefined'),
                     const href = t.getAttributeNS( null, 'href' );
                     if( href === null ) continue;
 
-                    const hrefN = URIs.normalized( href, docLoc );
+                    const hrefN = URIs.normalized( href, docUri );
                     if( hrefN !== href ) t.setAttributeNS( null, 'href', hrefN );
                 }
             };
@@ -553,7 +559,7 @@ console.assert( (eval('var _tmp = null'), typeof _tmp === 'undefined'),
             };
             req.ontimeout = ( e ) =>
             {
-                console.warn( 'Document request timed out: ' + docLoc );
+                console.warn( 'Document request timed out: ' + docUri );
             };
 
           // ================
@@ -582,8 +588,8 @@ console.assert( (eval('var _tmp = null'), typeof _tmp === 'undefined'),
 
 
 
-        entryMap.set( DOCUMENT_LOCATION, // Storing the present document
-          new DocumentCacheEntry( document, DOCUMENT_LOCATION, /*readers*/null ));
+        entryMap.set( DOCUMENT_URI, // Storing the present document
+          new DocumentCacheEntry( document, DOCUMENT_URI, /*readers*/null ));
         return expo;
 
     }() );
@@ -631,7 +637,7 @@ console.assert( (eval('var _tmp = null'), typeof _tmp === 'undefined'),
   *         a single algorithm is used for both".  It might equally have been called the "URI API".
   *         https://url.spec.whatwg.org/#goals
   *
-  *  [WDL]  Either 'document.location' or 'window.location', they are identical.
+  *  [WDL]  ‘window.location’ or ‘window.document.location’?  One may use either, they are identical.
   *         https://www.w3.org/TR/html5/browsers.html#the-location-interface
   */
 
