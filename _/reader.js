@@ -84,7 +84,7 @@ console.assert( (eval('var _tmp = null'), typeof _tmp === 'undefined'),
 
     /** Whether to enforce program constraints whose violations are expensive to detect.
       */
-    const toEnforceCostlyConstraints = !isUserNonProgrammer;
+    const toEnforceConstraints = !isUserNonProgrammer;
 
 
 
