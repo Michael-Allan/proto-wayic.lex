@@ -48,7 +48,7 @@
   *       [AFA in http://reluk.ca/project/wayic/read/readable.css]
   *
   *
-  * NOTES  (continued at bottom)
+  * NOTES  (see at bottom)
   * -----
   */
 'use strict';
