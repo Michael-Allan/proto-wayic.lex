@@ -1,4 +1,7 @@
-/** reader - Web automation for readers of the dictionary
+/** reader.js - Term document programming on the client side
+  *
+  *   Summoned by a *script* tag in each term document of the dictionary,
+  *   this program runs in the reader’s web browser where it manipulates the document DOM.
   *
   *   Tested under Chrome and Firefox only.
   *
