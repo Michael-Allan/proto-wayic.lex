@@ -4,7 +4,26 @@
         <title>‘stemma’</title>
         </head>
     <body>
-        <a rel='content-repository' href='http://reluk.ca/project/wayic/origins/stemma'>content</a>
+
+
+<section id='stemma'>
+    <h2>     stemma</h2>
+    <ul>
+        <li>
+            as per <!-- A useful hyperlink for an uncommon word -->
+            <cite><a href='https://en.wiktionary.org/wiki/stemma#English'>
+                           https://en.wiktionary.org/wiki/stemma</a></cite>
+            </li>
+        </ul>
+    </section>
+<section id='xrefs' style='border-top:thin solid'>
+    <section id=                                      'bit_stemma'>
+        <a href='http://reluk.ca/project/wayic/origins/bit_stemma#bit_stemma'
+          rel='content-repository'>content</a>
+        </section>
+    </section>
+
+
         <script src='_/reader.js'/>
         </body>
     </html>
