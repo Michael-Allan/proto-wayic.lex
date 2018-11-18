@@ -10,10 +10,6 @@
     <a rel='content-repository' href='http://reluk.ca/project/wayic/way#way'>content</a>
     </section>
 <section id='xrefs' style='border-top:thin solid'>
-    <section id=                                        'intercast_way_network'>
-        <a href='http://reluk.ca/project/wayic/intercast/intercast_way_network#intercast_way_network'
-          rel='content-repository'>content</a>
-        </section>
     <section id=                                     'off_way'>
         <a href='http://reluk.ca/project/wayic/script/off_way#off_way'
           rel='content-repository'>content</a>
