@@ -4,7 +4,34 @@
         <title>‘bitlink’</title>
         </head>
     <body>
-        <a rel='content-repository' href='http://reluk.ca/project/wayic/intercast/bitlink'>content</a>
+
+
+<section      id='bitlink'>
+    <h2><a href='#bitlink'>
+                  bitlink</a></h2>
+    <ul>
+        <li>
+            a link between <a href='http://reluk.ca/project/wayic/script/waybit'>
+            waybits</a>
+            </li>
+        </ul>
+    </section>
+<section id='xrefs' style='border-top:thin solid'>
+    <section id=                                      'genetic_bitlink'>
+        <a href='http://reluk.ca/project/wayic/origins/genetic_bitlink#genetic_bitlink'
+          rel='content-repository'>content</a>
+        </section>
+    <section id=                                      'recombinant_bitlink'>
+        <a href='http://reluk.ca/project/wayic/origins/recombinant_bitlink#recombinant_bitlink'
+          rel='content-repository'>content</a>
+        </section>
+    <section id=                                      'stemmatic_bitlink'>
+        <a href='http://reluk.ca/project/wayic/origins/stemmatic_bitlink#stemmatic_bitlink'
+          rel='content-repository'>content</a>
+        </section>
+    </section>
+
+
         <script src='_/reader.js'/>
         </body>
     </html>
