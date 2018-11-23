@@ -1,25 +1,17 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <html xml:lang='en-CA' xmlns='http://www.w3.org/1999/xhtml'>
     <head>
-        <title>‘tree’</title>
+        <title>‘bit’</title>
         </head>
     <body>
 
 
-<section id='tree'>
-    <h2>     tree</h2>
+<section id='bit'>
+    <h2>     bit</h2>
     </section>
 <section id='xrefs' style='border-top:thin solid'>
     <section id=                                      'genetic_bit_tree'>
         <a href='http://reluk.ca/project/wayic/origins/genetic_bit_tree#genetic_bit_tree'
-          rel='content-repository'>content</a>
-        </section>
-    <section id=                                      'kinbit_tree'>
-        <a href='http://reluk.ca/project/wayic/origins/kinbit_tree#kinbit_tree'
-          rel='content-repository'>content</a>
-        </section>
-    <section id=                                      'recombit_tree'>
-        <a href='http://reluk.ca/project/wayic/origins/recombit_tree#recombit_tree'
           rel='content-repository'>content</a>
         </section>
     </section>
