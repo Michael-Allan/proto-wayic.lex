@@ -1,14 +1,14 @@
 /** reader.js - Term document programming on the client side
   *
   *   Summoned by a *script* tag in each term document of the dictionary,
-  *   this program runs in the reader’s web browser where it manipulates the document DOM.
+  *   this program runs in the reader’s Web browser where it manipulates the document DOM.
   *
   *   Tested under Chrome and Firefox only.
   *
   *
   * BASIC USAGE
   * -----------
-  *   This program is for use in term documents that are viewed in a web browser.
+  *   This program is for use in term documents that are viewed in a Web browser.
   *   To use it, append the following line to the end of the *body* element:
   *
   *       <script src='http://reluk.ca/project/wayic/lex/_/reader.js'/>
