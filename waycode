@@ -4,7 +4,22 @@
         <title>‘waycode’</title>
         </head>
     <body>
-        <a rel='content-repository' href='http://reluk.ca/project/wayic/script/waycode'>content</a>
-        <script src='_/reader.js'/>
+
+
+<section      id='waycode'>
+    <h2><a href='#waycode'>
+                  waycode</a></h2>
+    <ul>
+        <li>
+            (mass noun) <i>another term for <a href='waysource'>
+            ‘waysource’</a></i>
+            </li>
+        <li>
+            (verb) write waysource
+            </li>
+        </ul>
+    </section>
+
+
         </body>
     </html>

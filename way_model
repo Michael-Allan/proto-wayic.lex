@@ -4,7 +4,22 @@
         <title>‘way model’</title>
         </head>
     <body>
-        <a rel='content-repository' href='http://reluk.ca/project/wayic/script/way_model'>content</a>
-        <script src='_/reader.js'/>
+
+
+<section      id='way_model'>
+    <h2><a href='#way_model'>
+                  way model</a></h2>
+    <ul>
+        <li>
+            (noun) a representation of a <a href='http://reluk.ca/project/wayic/way'>
+            way</a>
+            </li>
+        <li>
+            (verb) fashion a representation of a way
+            </li>
+        </ul>
+    </section>
+
+
         </body>
     </html>

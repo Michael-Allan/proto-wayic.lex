@@ -4,7 +4,19 @@
         <title>‘model’</title>
         </head>
     <body>
-        <a rel='content-repository' href='http://reluk.ca/project/wayic/script/model'>content</a>
+
+
+<section id='model'>
+    <h2>     model</h2>
+    </section>
+<section id='xrefs' style='border-top:thin solid'>
+    <section id='way_model'>
+        <a href='way_model#way_model'
+          rel='content-repository'>content</a>
+        </section>
+    </section>
+
+
         <script src='_/reader.js'/>
         </body>
     </html>

@@ -4,7 +4,26 @@
         <title>‘waysource’</title>
         </head>
     <body>
-        <a rel='content-repository' href='http://reluk.ca/project/wayic/script/waysource'>content</a>
-        <script src='_/reader.js'/>
+
+
+<section      id='waysource'>
+    <h2><a href='#waysource'>
+                  waysource</a></h2>
+    <ul>
+        <li>
+            (mass noun) <a href='http://reluk.ca/project/wayic/script/Wayscript'>
+            Wayscript</a> text to be assembled into an executable <a href='way_model'>
+            way model</a>
+            <ul>
+                <li>
+                    the <a href='http://reluk.ca/project/wayic/wayical'>
+                    wayical</a> analogue of source code
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </section>
+
+
         </body>
     </html>
