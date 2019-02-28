@@ -11,9 +11,12 @@
                   waysource</a></h2>
     <ul>
         <li>
-            (mass noun) <a href='http://reluk.ca/project/wayic/script/Wayscript'>
-            Wayscript</a> text to be assembled into an executable <a href='way_model'>
+            (mass noun) a text listing of declarations
+            to be compiled into an executable <a href='way_model'>
             way model</a>
+            <!-- After the definition of ‘source code’ in the Oxford dictionary of English, 2nd edition.
+              Edited by Judy Pearsall, Patrick Hanks, Catherine Soanes and Angus Stevenson.
+              Oxford University Press, Oxford, 2003. -->
             <ul>
                 <li>
                     the <a href='http://reluk.ca/project/wayic/wayical'>
