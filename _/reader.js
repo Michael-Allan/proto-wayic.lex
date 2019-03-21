@@ -1,6 +1,6 @@
 /** reader.js - Term document programming on the client side
   *
-  *   Summoned by a *script* tag in each term document of the dictionary,
+  *   Summoned by a `script` tag in each term document of the dictionary,
   *   this program runs in the reader’s Web browser where it manipulates the document DOM.
   *
   *   Tested under Chrome and Firefox only.
@@ -9,46 +9,39 @@
   * BASIC USAGE
   * -----------
   *   This program is for use in term documents that are viewed in a Web browser.
-  *   To use it, append the following line to the end of the *body* element:
+  *   To use it, append the following line to the end of the `body` element:
   *
   *       <script src='http://reluk.ca/project/wayic/lex/_/reader.js'/>
   *
-  *   For more information, see doc.task § Content importer § usage.
+  *   For further information on basic usage, see ./doc.task § content importer § usage.
   *
   *
   * ENTRY
   * -----
-  *   This program starts itself at function *run*, declared below.
+  *   This program starts itself at function `run`, declared below.
   *
   *
-  * TROUBLESHOOTING
-  * ---------------
+  * TESTING AND TROUBLESHOOTING
+  * ---------------------------
   *
   *   Console reporting
   *   -----------------
   *     This program reports problems it detects to the browser’s debugging console.
   *     https://console.spec.whatwg.org/
   *
-  *   Requests by ‘file’ scheme
-  *   -------------------------
-  *     When the user requests a term document from a ‘file’ scheme URI.
+  *   Alert reporting under ‘file’ scheme
+  *   -----------------------------------
+  *     When the user requests a term document from a ‘file’ scheme URI,
+  *     this program assumes that the user is the author of that document.  Then,
+  *     in addition to console reporting, it opens an *alert* window to report malformed content
+  *     or any other problem that an author might be able to remedy.
   *
-  *     Alert reporting
-  *     ---------------
-  *       When the user requests a term document from a ‘file’ scheme URI,
-  *       this program assumes that the user is the author of that document.  Then,
-  *       in addition to console reporting, it opens an *alert* window to report malformed content
-  *       or any other problem that an author might be able to remedy.
-  *
-  *     Limitations
-  *     -----------
-  *       When a Chrome user requests a term document from a ‘file’ scheme URI, any relative *href*
-  *       in a content importer will fail (Chrome 65).  The importer will then stay in its default,
-  *       hyperlink form, allowing the user to attempt manual access to the content.
-  *
-  *       Security constraints enforced by the browser are the underlying cause of such failures.
-  *       A workaround is the Chrome option ‘--allow-file-access-from-files’.
-  *       [AFA in http://reluk.ca/project/wayic/read/readable.css]
+  *   Limitations under ‘file’ scheme
+  *   -------------------------------
+  *     When a Chrome user requests a term document from a ‘file’ scheme URI, any relative `href`
+  *     in a content importer will fail (Chrome version 65), leaving the importer in its default,
+  *     hyperlink trigger form.  Security constraints enforced by Chrome are the underlying cause.
+  *     A workaround is its `--allow-file-access-from-files` option. [AFA]
   *
   *
   * NOTES  (see at bottom)
@@ -133,7 +126,7 @@ console.assert( (eval('var _tmp = null'), typeof _tmp === 'undefined'),
 
 
         /** Answers whether the given URI reference is detected to have an abnormal form,
-          * with any detection depending also on whether *toEnforceConstraints*.
+          * with any detection depending also on whether `toEnforceConstraints`.
           *
           *     @param ref (string)
           *     @return (boolean)
@@ -145,7 +138,7 @@ console.assert( (eval('var _tmp = null'), typeof _tmp === 'undefined'),
             if( toEnforceConstraints )
             {
                 try{ return ref !== expo.normalized(ref) }
-                catch( x ) { console.warn( 'Suppressed exception: ' + x ); } // E.g. if *ref* relative
+                catch( x ) { console.warn( 'Suppressed exception: ' + x ); } // E.g. if `ref` relative
             }
             return false;
         };
@@ -165,14 +158,14 @@ console.assert( (eval('var _tmp = null'), typeof _tmp === 'undefined'),
           * which is generally adequate to compare references for equivalence.
           *
           * This is a convenience function.  If you already have an instance of URL,
-          * then a direct call to *normalizedU* will be simpler and more efficient.
+          * then a direct call to `normalizedU` will be simpler and more efficient.
           *
           *     @param ref (string) A URI reference.
           *       See: URI-reference, https://tools.ietf.org/html/rfc3986#section-4.1
-          *     @param base (string, optional unless *ref* is relative) The base URI.
+          *     @param base (string, optional unless `ref` is relative) The base URI.
           *       See: Establishing a base URI, https://tools.ietf.org/html/rfc3986#section-5.1
           *
-          *     @throw Error if *ref* is relative and *base* is undefined.
+          *     @throw Error if `ref` is relative and `base` is undefined.
           *
           *     @return (string)
           *     @see Normalization and comparison, https://tools.ietf.org/html/rfc3986#section-6
@@ -224,15 +217,15 @@ console.assert( (eval('var _tmp = null'), typeof _tmp === 'undefined'),
 
 
 
-    /** The pattern of token that indicates a content importer.  This is a RegExp in form.
-      * Tested against the *rel* attribute of an HTML *a* element, it tells whether the element
+    /** The pattern of token that indicates a content importer.  This is a `RegExp` in form.
+      * Tested against the `rel` attribute of an HTML `a` element, it tells whether the element
       * is a content importer.
       *
       *     @see RegExp#test
       */
     const CIL_TOKEN_PATTERN = new RegExp( '\\bcontent-repository\\b' );
-      // Here adopting the proposed link type of *content-repository*.  *DCTERMS.isReplacedBy*
-      // might have been more appropriate, were its use on *a* elements not forbidden.
+      // Here adopting the proposed link type of `content-repository`.  `DCTERMS.isReplacedBy`
+      // might have been more appropriate, were its use on `a` elements not forbidden.
       // http://microformats.org/wiki/existing-rel-values?oldid=66512#HTML5_link_type_extensions
 
 
@@ -250,6 +243,48 @@ console.assert( (eval('var _tmp = null'), typeof _tmp === 'undefined'),
 
 
 
+    /** Makes a requestor for XML or HTML documents, effective by either HTTP or local file access.
+      *
+      *     @param uri (string) As per 'URI', https://tools.ietf.org/html/rfc3986#section-3
+      *
+      *     @return (XMLHttpRequest)
+      */
+    function makeDocumentRequestor( uri )
+    {
+        // Changing?  sync'd ← http://reluk.ca/project/wayic/read/readable.js
+
+        const isSchemed = URIs.SCHEMED_PATTERN.test( uri );
+        if( !isSchemed ) throw MALFORMED_PARAMETER;
+
+        const requestor = new XMLHttpRequest();
+          // "XMLHttpRequest" is a misnomer; an instance of `XMLHttpRequest` is not a proper request,
+          // rather a requestor which makes a request when its `send` method is called.
+        requestor.open( 'GET', uri, /*async*/true );
+          // "Developers must not pass false for the `async` argument when *current global object*
+          // is a `Window` object."  https://xhr.spec.whatwg.org/#the-open()-method
+        requestor.responseType = 'document';
+        requestor.timeout = uri.startsWith('file:')? 2000: 8000; // ms, depends on `isSchemed`
+
+      // Failsafe event handlers, defaults for some of https://xhr.spec.whatwg.org/#event-handlers
+      // -----------------------
+        requestor.onabort = ( _event/*ignored ProgressEvent*/ ) =>
+        {
+            console.warn( 'Request aborted: ' + uri );
+        };
+        requestor.onerror = ( _event/*ignored ProgressEvent*/ ) =>
+        {
+            console.warn( 'Request failed: ' + uri );
+        };
+        requestor.ontimeout = ( _event/*ignored ProgressEvent*/ ) =>
+        {
+            console.warn( 'Request timed out: ' + uri );
+        };
+
+        return requestor;
+    }
+
+
+
     /** Reports malformed content, or any other problem that a user with write access
       * to the document might be able to redress.
       */
@@ -258,7 +293,7 @@ console.assert( (eval('var _tmp = null'), typeof _tmp === 'undefined'),
         if( message === null ) throw "Null parameter";
 
         console.error( message );
-        if( isUserEditor ) alert( message ); // See § TROUBLESHOOTING
+        if( isUserEditor ) alert( message ); // See § TESTING AND TROUBLESHOOTING
     }
 
 
@@ -279,11 +314,11 @@ console.assert( (eval('var _tmp = null'), typeof _tmp === 'undefined'),
       * trying to replace each with the content it imports.
       *
       *     @param branch (Element)
-      *     @param docUri (string) The location of the branch's document in normal URI form.
+      *     @param docURI (string) The location of the branch's document in normal URI form.
       *
       *     @see URIs#normalized
       */
-    function runImports( branch, docUri )
+    function runImports( branch, docURI )
     {
         const traversal = document.createNodeIterator( branch, SHOW_ELEMENT );
         for( traversal.nextNode()/*onto the branch element itself*/;; )
@@ -302,7 +337,7 @@ console.assert( (eval('var _tmp = null'), typeof _tmp === 'undefined'),
             if( href === null ) continue;
 
             const importer = t;
-            const linkU = new URL( href, docUri );
+            const linkU = new URL( href, docURI );
             let exDocURI = URIs.normalizedU( linkU ); // Location of the exporting document
             const fragmentLength = linkU.hash.length; // Which includes the '#' character
             let _import;
@@ -416,6 +451,7 @@ console.assert( (eval('var _tmp = null'), typeof _tmp === 'undefined'),
 
         class DocumentCacheEntry
         {
+            // Changing?  sync'd ← http://reluk.ca/project/wayic/read/readable.js
 
 
             /** Constructs a DocumentCacheEntry.
@@ -476,21 +512,21 @@ console.assert( (eval('var _tmp = null'), typeof _tmp === 'undefined'),
 
 
         /** Gives the indicated document to the reader.  If already the document is stored,
-          * then immediately it calls reader.read, followed by reader.close.
+          * then immediately it calls `reader.read`, followed by `reader.close`.
           *
           * Otherwise this function starts a storage process and returns.  If the process eventually
-          * succeeds, then it calls reader.read.  Regardless it ends by calling reader.close.
+          * succeeds, then it calls `reader.read`.  Regardless it ends by calling `reader.close`.
           *
-          *     @param docUri (string) The document location in normal URI form.
+          *     @param docURI (string) The document location in normal URI form.
           *     @param reader (DocumentReader)
           *
           *     @see URIs#normalized
           */
-        expo.readNowOrLater = function( docUri, reader )
+        expo.readNowOrLater = function( docURI, reader )
         {
-            if( URIs.isDetectedAbnormal( docUri )) throw URIs.makeMessage_abnormal( docUri );
+            if( URIs.isDetectedAbnormal( docURI )) throw URIs.makeMessage_abnormal( docURI );
 
-            let entry = entryMap.get( docUri );
+            let entry = entryMap.get( docURI );
             if( entry !== undefined ) // Then the document was already requested
             {
                 const readers = entry.readers;
@@ -500,75 +536,56 @@ console.assert( (eval('var _tmp = null'), typeof _tmp === 'undefined'),
             }
 
             const readers = [];
-            entry = new DocumentCacheEntry( /*document*/null, docUri, readers );
+            entry = new DocumentCacheEntry( /*document*/null, docURI, readers );
             readers.push( reader );
-            entryMap.set( docUri, entry );
+            entryMap.set( docURI, entry );
 
-          // ===================
-          // Configure a request for the document
-          // ===================
-            const req = new XMLHttpRequest();
-            req.open( 'GET', docUri, /*async*/true ); // Misnomer; opens nothing, only sets config
-         // req.overrideMimeType( 'application/xhtml+xml' );
+          // =====================
+          // Configure a requestor for the document
+          // =====================
+            const requestor = makeDocumentRequestor( docURI );
+         // requestor.overrideMimeType( 'application/xhtml+xml' );
          /// Still it parses to an XMLDocument (Firefox 52), unlike the present document
-            req.responseType = 'document';
-            req.timeout = docUri.startsWith('file:')? 2000: 8000; // ms
 
           // ===========
           // Stand ready to catch the response
           // ===========
-            req.onabort = ( _event/*ignored*/ ) =>
-            {
-                console.warn( 'Document request aborted: ' + docUri );
-            };
-            req.onerror = ( _event/*ignored*/ ) =>
-            {
-                // Parameter *_event* is a ProgressEvent, at least on Firefox,
-                // which contains no useful information on the specific cause of the error.
-
-                console.warn( 'Document request failed: ' + docUri );
-            };
-            req.onload = ( event ) =>
+            requestor.onload = ( event ) => // not by `addEventListener` [XHR]
             {
                 const doc = event.target.response;
                 entry.document = doc;
 
-              // Normalize *href* attributes
-              // ---------------------------
+              // Test `id` declarations
+              // ----------------------
                 const traversal = doc.createNodeIterator( doc, SHOW_ELEMENT );
                 for( traversal.nextNode()/*onto the document node itself*/;; )
                 {
                     const t = traversal.nextNode();
                     if( t === null ) break;
 
-                    const href = t.getAttributeNS( null, 'href' );
-                    if( href === null ) continue;
-
-                    const hrefN = URIs.normalized( href, docUri );
-                    if( hrefN !== href ) t.setAttributeNS( null, 'href', hrefN );
+                    const id = t.getAttribute( 'id' );
+                    if( id !== null ) testIdentification( t, id );
                 }
             };
-            req.onloadend = ( _event/*ignored*/ ) =>
+            requestor.onloadend = ( _event/*ignored ProgressEvent*/ ) =>
             {
-                // Parameter *_event* is a ProgressEvent, at least on Firefox, which contains
-                // no useful information.  If more information is ever needed, then it might
-                // be obtained from req.status, or the fact of a call to req.onerror, above.
+                // The given `ProgressEvent` holds slight information.  More might be got
+                // from the properties and methods of the requestor itself, or the fact
+                // of calls to other event handlers.
 
               // Notify the waiting readers
               // --------------------------
                 const readers = entry.readers;
                 entry.readers = null;
-                for( const r of readers ) notifyReader( r, entry );
-            };
-            req.ontimeout = ( e ) =>
-            {
-                console.warn( 'Document request timed out: ' + docUri );
+                for( const r of     readers ) notifyReader( r, entry );
+                for( const r of omnireaders ) notifyReader( r, entry );
+                noteReadersNotified( entry );
             };
 
           // ================
           // Send the request
           // ================
-            req.send();
+            requestor.send();
         };
 
 
@@ -576,7 +593,7 @@ console.assert( (eval('var _tmp = null'), typeof _tmp === 'undefined'),
        // - P r i v a t e ------------------------------------------------------------------------------
 
 
-        /** Map of document entries (DocumentCacheEntry) keyed by DocumentCacheEntry#location.
+        /** Map of document entries (DocumentCacheEntry) keyed by `DocumentCacheEntry#location`.
           */
         const entryMap = new Map();
 
@@ -607,6 +624,7 @@ console.assert( (eval('var _tmp = null'), typeof _tmp === 'undefined'),
       */
     class DocumentReader
     {
+        // Changing?  sync'd ← http://reluk.ca/project/wayic/read/readable.js
 
         /** Closes this reader.
           *
@@ -636,13 +654,22 @@ console.assert( (eval('var _tmp = null'), typeof _tmp === 'undefined'),
 
 /** NOTES
   * ----
+  *  [AFA]  Chrome option `--allow-file-access-from-files`.
+  *         https://peter.sh/experiments/chromium-command-line-switches/#allow-file-access-from-files
+  *         https://code.google.com/p/chromium/codesearch#chromium/src/content/public/common/content_switches.cc&q=kAllowFileAccessFromFiles&sq=package:chromium&type=cs
+  *
+  *         Security implications: https://stackoverflow.com/questions/29371600
+  *
   *  [UAU]  The URL API for all URIs?  Yes, the URL API applies to URIs in general.  "In practice
   *         a single algorithm is used for both".  It might equally have been called the "URI API".
   *         https://url.spec.whatwg.org/#goals
   *
-  *  [WDL]  ‘window.location’ or ‘window.document.location’?  One may use either, they are identical.
+  *  [WDL]  `window.location` or `window.document.location`?  One may use either, they are identical.
   *         https://www.w3.org/TR/html5/browsers.html#the-location-interface
+  *
+  *  [XHR]  Registering the event handler instead by `addEventListener` has caused failures.
+  *         See [XHR] in <http://reluk.ca/project/wayic/read/readable.js>.
   */
 
 
-// Copyright © 2017-2018 Michael Allan and contributors.  Licence MIT.
+// Copyright © 2017-2019 Michael Allan and contributors.  Licence MIT.
