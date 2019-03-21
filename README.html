@@ -9,7 +9,7 @@
 <section id='web_serving' lang='en-CA'>
     <h2>Serving</h2>
     <p>
-        Term documents need special response headers.
+        Special response headers are needed for serving term documents.
         These are the documents without an extension on their file names.
         Appropriate headers for serving them are:
         </p>
@@ -25,15 +25,15 @@
         </ul>
     <p>
         See the <a href='http://reluk.ca/sys/host/server/etc/apache2/7_domain/reluk.ca/public/5_in_project_wayic.conf'>
-        working example</a> of a header configuration for Apache httpd.
+        working example</a> of a header configuration for Apache <code>httpd</code>.
         </p>
     <p>
-        The <code>Access-Control-Allow-Origin</code> header grants universal access (<code>*</code>)
-        to the term documents.  This enables <a href='_/doc.task'>
-        content importers</a> that were loaded into the user’s browser from a foreign network domain,
-        or a ‘file’ scheme, to import them.  In other words, it enables Web publishers to reuse
-        the definitions in dictionary compilations of their own, and enables Web developers to test
-        the compilations directly from their local file systems.
+        The <code>Access-Control-Allow-Origin</code> header grants to programmatic requesters
+        originating from all network domains (<code>*</code>) permission to read
+        this dictionary’s term documents.  Such requesters include the <a href='_/doc.task'>
+        content importers</a> both of other dictionaries published at remote locations,
+        and of copies of the present dictionary stored in local file systems (null domain)
+        and viewed in a browser under a ‘file’ scheme.
         </p>
     </section>
 <section lang='en-CA'>
