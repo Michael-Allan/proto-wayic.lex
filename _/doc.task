@@ -30,19 +30,18 @@ wayic.lex/doc.task - Documentation in rough
 
     ────────────────────────────────────────────────────────────────────────────────────────────────────
     Content importer`
-    [ purpose
+    + purpose
         - in a term document
-        - to import and insert content from an element in a separate document
-            - namely from an *exporter* in an *exporting document*
-            - which is typically another term document
-    [ terms
+        - to import and insert content from another element
+            - namely from an *exporter* in an *exporting document*, typically a separate term document
+    + definition of terms
         * exporter
-            - the element whose content to import
+            - an element whose content may be imported
         * exporting document
-            - the document of the exporter
-    [ usage
+            - the document of an exporter
+    + usage
         - in a term document
-        + to import all content from the exporting document's *body* element
+        * to import all content from an exporting document's `body` element
             - here EXDOC is the URL of the exporting document:
 
                     ⋯
@@ -53,19 +52,27 @@ wayic.lex/doc.task - Documentation in rough
                       <script src='http://reluk.ca/project/wayic/lex/_/reader.js'/>
                       </body>
 
-            - see also reader.js §§ Basic usage, Troubleshooting
-        + to import the content of a particular exporter
+            - such a cross origin request to `reluk.ca` depends on the stipulation
+              that "cross origin requests are enabled" there
+                ( ./project.task § publication of this project
+            - see also `./reader.js` §§ basic usage, troubleshooting
+        * to import the content of a particular exporter
             - as above, but now specify also the exporter
             - here EXPORTER is the value of the exporter's *id* attribute:
 
                     ⋯
                   <a rel='content-repository' href='EXDOC#EXPORTER'>content</a>
                     ⋯
-    [ effect
-        - the imported content replaces the importer (HTML *a* element)
+    + effect
+        - the exporter's content is imported
+            - in the case of exporters from remote domains,
+              this depends on the exporting document being served with appropriate headers
+                ( ../README.html#web_serving
+        - the imported content replaces the importer
+            - replaces the `a` element, that is
         - should anything go wrong
-            - the importer is left as a hyperlink trigger to give manual access to the content
+            - the importer is left as a hyperlink trigger, giving manual access to the content
 
 
 
-                                     Copyright © 2017-2018 Michael Allan and contributors.  Licence MIT.
+                                     Copyright © 2017-2019 Michael Allan and contributors.  Licence MIT.
