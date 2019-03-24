@@ -1,7 +1,7 @@
-/** reader.js - Term document programming on the client side
+/** reader.js - Presentation program for term documents
   *
-  *   Summoned by a `script` tag in each term document of the dictionary,
-  *   this program runs in the reader’s Web browser where it manipulates the document DOM.
+  *   Summoned by a `script` tag in each term document of the dictionary, this program runs on
+  *   the client side — in the reader’s Web browser — where it manipulates the term document’s DOM.
   *
   *   Tested under Chrome and Firefox only.
   *
