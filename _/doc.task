@@ -1,4 +1,4 @@
-wayic.lex/doc.task - Documentation in rough
+wayic/lex/_/doc.task - Documentation in rough
 
     + scope
         - the scope of this dictionary is the terminology of general wayics
@@ -52,9 +52,7 @@ wayic.lex/doc.task - Documentation in rough
                       <script src='http://reluk.ca/project/wayic/lex/_/reader.js'/>
                       </body>
 
-            - such a cross origin request to `reluk.ca` depends on the stipulation
-              that "cross origin requests are enabled" there
-                ( ./project.task § publication of this project
+                ( [COR]
             - see also `./reader.js` §§ basic usage, troubleshooting
         * to import the content of a particular exporter
             - as above, but now specify also the exporter
@@ -67,11 +65,21 @@ wayic.lex/doc.task - Documentation in rough
         - the exporter's content is imported
             - in the case of exporters from remote domains,
               this depends on the exporting document being served with appropriate headers
-                ( ../README.html#web_serving
+                ( [COR]
         - the imported content replaces the importer
             - replaces the `a` element, that is
         - should anything go wrong
             - the importer is left as a hyperlink trigger, giving manual access to the content
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////
+// N o t e
+/
+
+   [COR]  Each request to a remote exporter for a term document, or to `reluk.ca` for
+          a programmatic resource file, requires that there "cross origin responses are enabled".
+          ./manual.task § publication § programmatic resource file
+          ./manual.task § publication § term documents
 
 
 

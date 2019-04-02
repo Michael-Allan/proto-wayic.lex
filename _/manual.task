@@ -1,0 +1,45 @@
+wayic/lex/_/manual.task - Instructions
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────────
+    Publication`
+    - instructions to the project provider: how to Web serve this project
+    + programmatic resource file
+        - there is only the one at present, namely `_/reader.js` -
+        - it is served to the Web each with a special response header as detailed below
+        - working example of a suitable header configuration for Apache HTTP Server
+            < http://reluk.ca/sys/host/server/etc/apache2/7_domain/reluk.ca/public/5_in_project_wayic_lex.conf
+        * cross origin responses are enabled
+            - project file `_/reader.js` is served to the Web
+              with a response header of `Access-Control-Allow-Origin: *` -
+                ( https://fetch.spec.whatwg.org/#http-access-control-allow-origin
+            - this header grants to programmatic requesters originating from all network domains (`*`)
+              permission to read the file
+                ( https://www.w3.org/TR/cors/
+            - such requesters include the content importers of other `wayic.lex` compatible
+              dictionaries published at remote locations
+                ( ./doc.task § content importer
+    + term documents
+        - these are the files named without an extension
+        - they are served to the Web each with special response headers as detailed below
+        - working example of a suitable header configuration for Apache HTTP Server
+            < http://reluk.ca/sys/host/server/etc/apache2/7_domain/reluk.ca/public/content_type/term_document.conf
+        * cross origin responses are enabled
+            - the term documents of this project are served to the Web
+              each with a response header of `Access-Control-Allow-Origin: *` -
+                ( https://fetch.spec.whatwg.org/#http-access-control-allow-origin
+            - this header grants to programmatic requesters originating from all network domains (`*`)
+              permission to read the term documents
+                ( https://www.w3.org/TR/cors/
+            - such requesters include the content importers both of:
+                ( ./doc.task § content importer
+                - other `wayic.lex` compatible dictionaries published at remote locations
+                - copies of the present dictionary stored in local file systems (null domain)
+                  and viewed in a browser under a 'file' scheme
+        * content type is XHTML
+            - the term documents of this project are served to the Web
+              each with a `Content-Type` response header specifying `application/xhtml+xml` -
+                ( https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.17
+
+
+
+                                          Copyright © 2019 Michael Allan and contributors.  Licence MIT.
