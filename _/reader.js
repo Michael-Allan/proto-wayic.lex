@@ -193,6 +193,17 @@ console.assert( (eval('var _tmp = null'), typeof _tmp === 'undefined'),
 
 
 
+        /** The pattern of a schemed URI reference, one that includes a scheme component,
+          * which would make it a URI as opposed to a relative reference.
+          *
+          *     @see URI reference,      https://tools.ietf.org/html/rfc3986#section-4.1
+          *     @see URI,                https://tools.ietf.org/html/rfc3986#section-3
+          *     @see Relative reference, https://tools.ietf.org/html/rfc3986#section-4.2
+          */
+        expo.SCHEMED_PATTERN = new RegExp( '^[A-Za-z0-9][A-Za-z0-9+.-]*:' );
+
+
+
         return expo;
 
     }() );
@@ -554,18 +565,6 @@ console.assert( (eval('var _tmp = null'), typeof _tmp === 'undefined'),
             {
                 const doc = event.target.response;
                 entry.document = doc;
-
-              // Test `id` declarations
-              // ----------------------
-                const traversal = doc.createNodeIterator( doc, SHOW_ELEMENT );
-                for( traversal.nextNode()/*onto the document node itself*/;; )
-                {
-                    const t = traversal.nextNode();
-                    if( t === null ) break;
-
-                    const id = t.getAttribute( 'id' );
-                    if( id !== null ) testIdentification( t, id );
-                }
             };
             requestor.onloadend = ( _event/*ignored ProgressEvent*/ ) =>
             {
@@ -577,9 +576,7 @@ console.assert( (eval('var _tmp = null'), typeof _tmp === 'undefined'),
               // --------------------------
                 const readers = entry.readers;
                 entry.readers = null;
-                for( const r of     readers ) notifyReader( r, entry );
-                for( const r of omnireaders ) notifyReader( r, entry );
-                noteReadersNotified( entry );
+                for( const r of readers ) notifyReader( r, entry );
             };
 
           // ================
