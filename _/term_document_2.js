@@ -1,51 +1,6 @@
-/** reader.js - Presentation program for term documents
+/** term_document_2.js - Presentation program for term documents, second part
   *
-  *   Summoned by a `script` tag in each term document of the dictionary, this program runs on
-  *   the client side — in the reader’s Web browser — where it manipulates the term document’s DOM.
-  *
-  *   Tested under Chrome and Firefox only.
-  *
-  *
-  * BASIC USAGE
-  * -----------
-  *   This program is for use in term documents that are viewed in a Web browser.
-  *   To use it, append the following line to the end of the `body` element:
-  *
-  *       <script src='http://reluk.ca/project/wayic/lex/_/reader.js'/>
-  *
-  *   For further information on basic usage, see ./doc.task § content importer § usage.
-  *
-  *
-  * ENTRY
-  * -----
-  *   This program starts itself at function `run`, declared below.
-  *
-  *
-  * TESTING AND TROUBLESHOOTING
-  * ---------------------------
-  *
-  *   Console reporting
-  *   -----------------
-  *     This program reports problems it detects to the browser’s debugging console.
-  *     https://console.spec.whatwg.org/
-  *
-  *   Alert reporting under ‘file’ scheme
-  *   -----------------------------------
-  *     When the user requests a term document from a ‘file’ scheme URI,
-  *     this program assumes that the user is the author of that document.  Then,
-  *     in addition to console reporting, it opens an *alert* window to report malformed content
-  *     or any other problem that an author might be able to remedy.
-  *
-  *   Limitations under ‘file’ scheme
-  *   -------------------------------
-  *     When a Chrome user requests a term document from a ‘file’ scheme URI, any relative `href`
-  *     in a content importer will fail (Chrome version 65), leaving the importer in its default,
-  *     hyperlink trigger form.  Security constraints enforced by Chrome are the underlying cause.
-  *     A workaround is its `--allow-file-access-from-files` option. [AFA]
-  *
-  *
-  * NOTES  (see at bottom)
-  * -----
+  *   Loaded by the first part, this part carries out the bulk of the program’s functions.
   */
 'use strict';
 console.assert( (eval('var _tmp = null'), typeof _tmp === 'undefined'),
@@ -641,7 +596,6 @@ console.assert( (eval('var _tmp = null'), typeof _tmp === 'undefined'),
 
 
 
-
    // ==============
 
     run();
@@ -651,12 +605,6 @@ console.assert( (eval('var _tmp = null'), typeof _tmp === 'undefined'),
 
 /** NOTES
   * ----
-  *  [AFA]  Chrome option `--allow-file-access-from-files`.
-  *         https://peter.sh/experiments/chromium-command-line-switches/#allow-file-access-from-files
-  *         https://code.google.com/p/chromium/codesearch#chromium/src/content/public/common/content_switches.cc&q=kAllowFileAccessFromFiles&sq=package:chromium&type=cs
-  *
-  *         Security implications: https://stackoverflow.com/questions/29371600
-  *
   *  [UAU]  The URL API for all URIs?  Yes, the URL API applies to URIs in general.  "In practice
   *         a single algorithm is used for both".  It might equally have been called the "URI API".
   *         https://url.spec.whatwg.org/#goals
