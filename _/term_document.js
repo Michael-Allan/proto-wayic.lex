@@ -106,8 +106,8 @@ console.assert( (eval('var _tmp = null'), typeof _tmp === 'undefined'),
 ////////////////////
 
     run(
-   // 'http://reluk.ca/project/'
-      '/home/mike/var/deploy/test/' // TEST purposes only
+      'http://reluk.ca/project/'
+   // '/LOCAL/WORKING/COPY/' // TEST purposes only
       );
 
 }() );
