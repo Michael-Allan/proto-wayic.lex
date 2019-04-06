@@ -13,7 +13,7 @@
   *
   *       <script src='http://reluk.ca/project/wayic/lex/_/term_document.js'/>
   *
-  *   For further information on basic use, see ./doc.task § content importer § use.
+  *   For further information on basic use, see <./doc.task § content importer § use>.
   *
   *
   * ENTRY
@@ -23,17 +23,18 @@
   *
   * TESTING AND TROUBLESHOOTING
   * ---------------------------
+  *   See also <http://reluk.ca/project/web/manual.task § troubleshooting>.
   *
   *   Console reporting
   *   -----------------
   *     This program reports problems it detects to the browser’s debugging console.
-  *     https://console.spec.whatwg.org/
+  *     <https://console.spec.whatwg.org/>
   *
   *   Alert reporting under ‘file’ scheme
   *   -----------------------------------
   *     When the user requests a term document from a ‘file’ scheme URI,
-  *     this program assumes that the user is the author of that document.  Then,
-  *     in addition to console reporting, it opens an *alert* window to report malformed content
+  *     this program assumes that the user is an author of that document.  Then,
+  *     in addition to console reporting, it opens an `alert` window to report malformed content
   *     or any other problem that an author might be able to remedy.
   *
   *   Limitations under ‘file’ scheme
@@ -44,8 +45,8 @@
   *     A workaround is its `--allow-file-access-from-files` option. [AFA]
   *
   *
-  * NOTE  (see at bottom)
-  * ----
+  * NOTES  (see at bottom)
+  * -----
   */
 'use strict';
 console.assert( (eval('var _tmp = null'), typeof _tmp === 'undefined'),
@@ -65,7 +66,7 @@ console.assert( (eval('var _tmp = null'), typeof _tmp === 'undefined'),
     {
         summonScript( relukDir + 'web/client_side.js', ( _Event ) =>
         {
-            if( ca_reluk_web_cSide === undefined ) return; // Script failed
+            if( window.ca_reluk_web_CSide === undefined ) return; // Script failed [WA]
 
           // Locate the source directory of the present program, whence it was summoned
           // --------------------------------------------------
@@ -102,23 +103,26 @@ console.assert( (eval('var _tmp = null'), typeof _tmp === 'undefined'),
 
 
 
-   // ==============
+////////////////////
 
     run(
-      'http://reluk.ca/project/'
-   // '/LOCAL/WORKING/COPY/' // TEST purposes only
+   // 'http://reluk.ca/project/'
+      '/home/mike/var/deploy/test/' // TEST purposes only
       );
 
 }() );
 
 
-/** NOTE
-  * ----
+/** NOTES
+  * -----
   *  [AFA]  Chrome option `--allow-file-access-from-files`.
   *         https://peter.sh/experiments/chromium-command-line-switches/#allow-file-access-from-files
   *         https://code.google.com/p/chromium/codesearch#chromium/src/content/public/common/content_switches.cc&q=kAllowFileAccessFromFiles&sq=package:chromium&type=cs
   *
   *         Security implications: https://stackoverflow.com/questions/29371600
+  *
+  *  [WA] · Without the `window.` accessor, the attempt to reference an undefined property would itself
+  *         throw an exception, needlessly cluttering up the console.
   */
 
 
