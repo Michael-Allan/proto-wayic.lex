@@ -6,6 +6,6 @@
     <body>
         <a rel='content-repository'
           href='http://reluk.ca/project/wayic/origins/genetic_bit_link'>content</a>
-        <script src='_/reader.js'/>
+        <script src='_/term_document.js'/>
         </body>
     </html>
