@@ -10,9 +10,16 @@ console.assert( (eval('var _tmp = null'), typeof _tmp === 'undefined'),
 ( function()
 {
 
+    const CSide = ca_reluk_web_CSide; // Imports from the general Web library
+
+        const MALFORMED_PARAMETER = CSide.MALFORMED_PARAMETER;
+        const URIs = CSide.URIs;
+
+
+
   /// ==================================================================================================
  ///  P r e l i m i n a r y   d e c l a r a t i o n s
-/// ====================================================================================================
+/// ==================================================================================================
 
 
     /** Whether the present document was requested from a 'file' scheme URI.
@@ -27,141 +34,11 @@ console.assert( (eval('var _tmp = null'), typeof _tmp === 'undefined'),
 
 
 
-    /** Whether it appears that the user would be unable to correct faults in this program.
+    /** Whether it appears that the user would be able to correct faults in this program.
       */
-    const isUserNonProgrammer = !wasRequestFileSchemed;
+    const isUserProgrammer = wasRequestFileSchemed;
 
-
-
-    /** Whether to enforce program constraints whose violations are expensive to detect.
-      */
-    const toEnforceConstraints = !isUserNonProgrammer;
-
-
-
-   // ==================================================================================================
-
-
-    /** Dealing with Uniform Resource Identifiers.
-      *
-      *     @see https://tools.ietf.org/html/rfc3986
-      */
-    const URIs = ( function()
-    {
-
-        const expo = {}; // The public interface of URIs
-
-        // Changing?  sync'd ← http://reluk.ca/project/wayic/read/readable.js
-
-
-
-        /** Returns the absolute form of the given URI reference; without a fragment, that is.
-          *
-          *     @param ref (string)
-          *
-          *     @see Absolute URI, https://tools.ietf.org/html/rfc3986#section-4.3
-          *     @see #defragmented
-          */
-        expo.absolute = function( ref )
-        {
-            const c = ref.lastIndexOf( '#' );
-            if( c >= 0 ) ref = ref.slice( 0, c ); // Defragmented
-            return ref;
-        };
-
-
-
-        /** Returns the same basic URI reference, but without a fragment.
-          * This function is a convenience, a descriptive alias of *absolute*.
-          *
-          *     @param ref (string)
-          */
-        expo.defragmented = function( ref ) { return expo.absolute( ref ); }
-
-
-
-        /** Answers whether the given URI reference is detected to have an abnormal form,
-          * with any detection depending also on whether `toEnforceConstraints`.
-          *
-          *     @param ref (string)
-          *     @return (boolean)
-          *
-          *     @see #normalized
-          */
-        expo.isDetectedAbnormal = function( ref )
-        {
-            if( toEnforceConstraints )
-            {
-                try{ return ref !== expo.normalized(ref) }
-                catch( x ) { console.warn( 'Suppressed exception: ' + x ); } // E.g. if `ref` relative
-            }
-            return false;
-        };
-
-
-
-        /** Returns a message (string) that the given URI reference is not in normal form.
-          *
-          *     @param ref (string)
-          *     @see #normalized
-          */
-        expo.makeMessage_abnormal = function( ref ) { return 'Not in normal form: ' + ref; };
-
-
-
-        /** Returns the normal form of the given URI reference,
-          * which is generally adequate to compare references for equivalence.
-          *
-          * This is a convenience function.  If you already have an instance of URL,
-          * then a direct call to `normalizedU` will be simpler and more efficient.
-          *
-          *     @param ref (string) A URI reference.
-          *       See: URI-reference, https://tools.ietf.org/html/rfc3986#section-4.1
-          *     @param base (string, optional unless `ref` is relative) The base URI.
-          *       See: Establishing a base URI, https://tools.ietf.org/html/rfc3986#section-5.1
-          *
-          *     @throw Error if `ref` is relative and `base` is undefined.
-          *
-          *     @return (string)
-          *     @see Normalization and comparison, https://tools.ietf.org/html/rfc3986#section-6
-          */
-        expo.normalized = function( ref, base )
-        {
-            return expo.normalizedU( new URL( ref, base )); // [UAU]
-        };
-
-
-
-        /** Returns the normal form of the given URI reference,
-          * which is generally adequate to compare references for equivalence.
-          *
-          *     @param refU (URL) An instance of *URL* from the URL API. [UAU]
-          *       https://url.spec.whatwg.org/
-          *
-          *     @return (string)
-          *     @see Normalization and comparison, https://tools.ietf.org/html/rfc3986#section-6
-          */
-        expo.normalizedU = function( refU ) { return refU.href; };
-          // URL.href is the same "serialization" by which the URL API determines equivalence.
-          // https://url.spec.whatwg.org/#dom-url-href
-          // https://url.spec.whatwg.org/#url-equivalence
-
-
-
-        /** The pattern of a schemed URI reference, one that includes a scheme component,
-          * which would make it a URI as opposed to a relative reference.
-          *
-          *     @see URI reference,      https://tools.ietf.org/html/rfc3986#section-4.1
-          *     @see URI,                https://tools.ietf.org/html/rfc3986#section-3
-          *     @see Relative reference, https://tools.ietf.org/html/rfc3986#section-4.2
-          */
-        expo.SCHEMED_PATTERN = new RegExp( '^[A-Za-z0-9][A-Za-z0-9+.-]*:' );
-
-
-
-        return expo;
-
-    }() );
+        { CSide.setEnforceConstraints( isUserProgrammer ); }
 
 
 
@@ -259,7 +136,7 @@ console.assert( (eval('var _tmp = null'), typeof _tmp === 'undefined'),
         if( message === null ) throw "Null parameter";
 
         console.error( message );
-        if( isUserEditor ) alert( message ); // See § TESTING AND TROUBLESHOOTING
+        if( isUserEditor ) alert( message ); // See `./term_document.js` § TESTING AND TROUBLESHOOTING
     }
 
 
@@ -605,10 +482,6 @@ console.assert( (eval('var _tmp = null'), typeof _tmp === 'undefined'),
 
 /** NOTES
   * ----
-  *  [UAU]  The URL API for all URIs?  Yes, the URL API applies to URIs in general.  "In practice
-  *         a single algorithm is used for both".  It might equally have been called the "URI API".
-  *         https://url.spec.whatwg.org/#goals
-  *
   *  [WDL]  `window.location` or `window.document.location`?  One may use either, they are identical.
   *         https://www.w3.org/TR/html5/browsers.html#the-location-interface
   *
