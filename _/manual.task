@@ -1,19 +1,21 @@
 wayic/lex/_/manual.task - Instructions
 
+    < see also http://reluk.ca/project/web/manual.task
+
     ────────────────────────────────────────────────────────────────────────────────────────────────────
     Publication`
     - instructions to the project provider: how to Web serve this project
-    + programmatic resource file
-        - there is only the one at present, namely `_/reader.js` -
-        - it is served to the Web each with a special response header as detailed below
+    + programmatic resource files
+        - these are the files named with an extension of `.js` -
+        - they are served to the Web each with a special response header as detailed below
         - working example of a suitable header configuration for Apache HTTP Server
             < http://reluk.ca/sys/host/server/etc/apache2/7_domain/reluk.ca/public/5_in_project_wayic_lex.conf
         * cross origin responses are enabled
-            - project file `_/reader.js` is served to the Web
-              with a response header of `Access-Control-Allow-Origin: *` -
+            - the programmatic resource files of this project are served to the Web
+              each with a response header of `Access-Control-Allow-Origin: *` -
                 ( https://fetch.spec.whatwg.org/#http-access-control-allow-origin
             - this header grants to programmatic requesters originating from all network domains (`*`)
-              permission to read the file
+              permission to read the files
                 ( https://www.w3.org/TR/cors/
             - such requesters include the content importers of other `wayic.lex` compatible
               dictionaries published at remote locations

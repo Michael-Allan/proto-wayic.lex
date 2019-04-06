@@ -39,8 +39,11 @@ wayic/lex/_/doc.task - Documentation in rough
             - an element whose content may be imported
         * exporting document
             - the document of an exporter
-    + usage
+    + use
         - in a term document
+        = remove to `./manual.task` -
+            - leaving here a mere reference to it
+            - amending accordingly `term_document.js` § BASIC USE
         * to import all content from an exporting document's `body` element
             - here EXDOC is the URL of the exporting document:
 
@@ -49,11 +52,11 @@ wayic/lex/_/doc.task - Documentation in rough
                         ⋯
                       <a rel='content-repository' href='EXDOC'>content</a>
                         ⋯
-                      <script src='http://reluk.ca/project/wayic/lex/_/reader.js'/>
+                      <script src='http://reluk.ca/project/wayic/lex/_/term_document.js'/>
                       </body>
 
                 ( [COR]
-            - see also `./reader.js` §§ basic usage, troubleshooting
+            - see also `./term_document.js` §§ BASIC USE, TESTING AND TROUBLESHOOTING
         * to import the content of a particular exporter
             - as above, but now specify also the exporter
             - here EXPORTER is the value of the exporter's *id* attribute:
