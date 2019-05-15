@@ -12,6 +12,7 @@ console.assert( (eval('var _tmp = null'), typeof _tmp === 'undefined'),
 
     const CSide = ca_reluk_web_CSide; // Imports from the general Web library
 
+        const DOCUMENT_URI = CSide.DOCUMENT_URI;
         const MALFORMED_PARAMETER = CSide.MALFORMED_PARAMETER;
         const URIs = CSide.URIs;
 
@@ -70,19 +71,6 @@ console.assert( (eval('var _tmp = null'), typeof _tmp === 'undefined'),
       // Here adopting the proposed link type of `content-repository`.  `DCTERMS.isReplacedBy`
       // might have been more appropriate, were its use on `a` elements not forbidden.
       // http://microformats.org/wiki/existing-rel-values?oldid=66512#HTML5_link_type_extensions
-
-
-
-    /** The location of present document (string) in normal URI form.
-      *
-      *     @see URIs#normalized
-      */
-    const DOCUMENT_URI = ( ()=>
-    {
-        // Changing?  sync'd ← http://reluk.ca/project/wayic/read/readable.js
-        const ref = URIs.defragmented( location.toString() ); // [WDL]
-        return URIs.normalized( ref ); // To be certain
-    })();
 
 
 
@@ -480,11 +468,8 @@ console.assert( (eval('var _tmp = null'), typeof _tmp === 'undefined'),
 }() );
 
 
-/** NOTES
+/** NOTE
   * ----
-  *  [WDL]  `window.location` or `window.document.location`?  One may use either, they are identical.
-  *         https://www.w3.org/TR/html5/browsers.html#the-location-interface
-  *
   *  [XHR]  Registering the event handler instead by `addEventListener` has caused failures.
   *         See [XHR] in <http://reluk.ca/project/wayic/read/readable.js>.
   */
