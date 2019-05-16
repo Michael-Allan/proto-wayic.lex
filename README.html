@@ -13,10 +13,10 @@
         </p>
     <ul>
         <li>
-            <a href='http://reluk.ca/project/wayic/architec/'>wayic.architec</a> - Architectonics
+            <a href='http://reluk.ca/project/proto-wayic/architec/'>proto-wayic.architec</a> - Architectonics
             </li>
         <li>
-            <a href='http://reluk.ca/project/wayic/web/'>wayic.web</a> - Web development
+            <a href='http://reluk.ca/project/proto-wayic/web/'>proto-wayic.web</a> - Web development
             </li>
         </ul>
     </section>
@@ -26,12 +26,12 @@
         The files for this project are released under an <a href='_/LICENCE.txt'>MIT licence</a>.
         </p>
     <ul>
-        <li>Readable copy of latest files at <a href='http://reluk.ca/project/wayic/lex/'>reluk.ca</a></li>
+        <li>Readable copy of latest files at <a href='http://reluk.ca/project/proto-wayic/lex/'>reluk.ca</a></li>
         <li>Browsable revision history at <a>GitHub</a> (top of this page) *</li>
         <li>
             Bare <code>.git</code> clones at
-            <a href=    'http://reluk.ca/var/repo/git/wayic.lex.git'>reluk.ca</a> or
-            <a href='https://github.com/Michael-Allan/wayic.lex.git'>GitHub</a> *
+            <a href=    'http://reluk.ca/var/repo/git/proto-wayic.lex.git'>reluk.ca</a> or
+            <a href='https://github.com/Michael-Allan/proto-wayic.lex.git'>GitHub</a> *
             <div style='font-size:0.85em; margin-top:1em; opacity:0.7'>
                 * Branch reluk.ca is liable to be rebased, master is stable.
                 </div>
@@ -60,7 +60,7 @@
                 if( t.localName !== 'a' ) continue;
 
                 var maybeFinished = false;
-                if( !isCorrect_reluk && t.href === 'http://reluk.ca/project/wayic/lex/' )
+                if( !isCorrect_reluk && t.href === 'http://reluk.ca/project/proto-wayic/lex/' )
                 {
                   // Disable useless link, append text directions instead
                   // --------------------
@@ -80,7 +80,7 @@
                           // Remove deceptive text directions, enable link instead
                           // --------------------------------
                             text.replaceData( 0, text.length, ' *' ); // Leaving only the last bit
-                            t.setAttribute( 'href', 'https://github.com/Michael-Allan/wayic.lex/' );
+                            t.setAttribute( 'href', 'https://github.com/Michael-Allan/proto-wayic.lex/' );
                             isCorrect_github = maybeFinished = true;
                         }
                     }
