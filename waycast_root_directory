@@ -5,7 +5,7 @@
         </head>
     <body>
         <a rel='content-repository'
-          href='http://reluk.ca/project/wayic/cast/waycast_root_directory'>content</a>
+          href='http://reluk.ca/project/proto-wayic/cast/waycast_root_directory'>content</a>
         <script src='_/term_document.js'/>
         </body>
     </html>

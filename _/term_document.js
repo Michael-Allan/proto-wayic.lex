@@ -11,7 +11,7 @@
   *   This program is for use in term documents that are viewed in a Web browser.
   *   To use it, append the following line to the end of the `body` element:
   *
-  *       <script src='http://reluk.ca/project/wayic/lex/_/term_document.js'/>
+  *       <script src='http://reluk.ca/project/proto-wayic/lex/_/term_document.js'/>
   *
   *   For further information on basic use, see <./doc.task § content importer § use>.
   *
@@ -23,7 +23,7 @@
   *
   * TESTING AND TROUBLESHOOTING
   * ---------------------------
-  *   See also <http://reluk.ca/project/web/manual.task § troubleshooting>.
+  *   See also <http://reluk.ca/project/proto-web/manual.task § troubleshooting>.
   *
   *   Console reporting
   *   -----------------
@@ -64,7 +64,7 @@ console.assert( (eval('var _tmp = null'), typeof _tmp === 'undefined'),
       */
     function run( relukDir )
     {
-        summonScript( relukDir + 'web/client_side.js', ( _Event ) =>
+        summonScript( relukDir + 'proto-web/client_side.js', ( _Event ) =>
         {
             if( window.ca_reluk_web_CSide === undefined ) return; // Script failed [WA]
 

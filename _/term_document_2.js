@@ -82,7 +82,7 @@ console.assert( (eval('var _tmp = null'), typeof _tmp === 'undefined'),
       */
     function makeDocumentRequestor( uri )
     {
-        // Changing?  sync'd ← http://reluk.ca/project/wayic/read/readable.js
+        // Changing?  sync'd ← http://reluk.ca/project/proto-wayic/read/readable.js
 
         const isSchemed = URIs.SCHEMED_PATTERN.test( uri );
         if( !isSchemed ) throw MALFORMED_PARAMETER;
@@ -282,7 +282,7 @@ console.assert( (eval('var _tmp = null'), typeof _tmp === 'undefined'),
 
         class DocumentCacheEntry
         {
-            // Changing?  sync'd ← http://reluk.ca/project/wayic/read/readable.js
+            // Changing?  sync'd ← http://reluk.ca/project/proto-wayic/read/readable.js
 
 
             /** Constructs a DocumentCacheEntry.
@@ -338,7 +338,7 @@ console.assert( (eval('var _tmp = null'), typeof _tmp === 'undefined'),
 
         const expo = {}; // The public interface of DocumentCache
 
-        // Changing?  sync'd ← http://reluk.ca/project/wayic/read/readable.js
+        // Changing?  sync'd ← http://reluk.ca/project/proto-wayic/read/readable.js
 
 
 
@@ -441,7 +441,7 @@ console.assert( (eval('var _tmp = null'), typeof _tmp === 'undefined'),
       */
     class DocumentReader
     {
-        // Changing?  sync'd ← http://reluk.ca/project/wayic/read/readable.js
+        // Changing?  sync'd ← http://reluk.ca/project/proto-wayic/read/readable.js
 
         /** Closes this reader.
           *
@@ -471,7 +471,7 @@ console.assert( (eval('var _tmp = null'), typeof _tmp === 'undefined'),
 /** NOTE
   * ----
   *  [XHR]  Registering the event handler instead by `addEventListener` has caused failures.
-  *         See [XHR] in <http://reluk.ca/project/wayic/read/readable.js>.
+  *         See [XHR] in <http://reluk.ca/project/proto-wayic/read/readable.js>.
   */
 
 

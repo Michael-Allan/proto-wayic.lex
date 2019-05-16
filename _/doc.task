@@ -1,13 +1,13 @@
-wayic/lex/_/doc.task - Documentation in rough
+proto-wayic/lex/_/doc.task - Documentation in rough
 
     + scope
         - the scope of this dictionary is the terminology of general wayics
             ( ./wayics
             - and of the present wayic in particular
                 ( ./wayic
-        - notably some wayic.web terms are general enough to transcend the scope
+        - notably some proto-wayic.web terms are general enough to transcend the scope
           and are excluded from the dictionary
-            ( http://reluk.ca/project/wayic/web/
+            ( http://reluk.ca/project/proto-wayic/web/
     + language
         - Canadian English is the language of this dictionary
             - and the default language
@@ -52,7 +52,7 @@ wayic/lex/_/doc.task - Documentation in rough
                         ⋯
                       <a rel='content-repository' href='EXDOC'>content</a>
                         ⋯
-                      <script src='http://reluk.ca/project/wayic/lex/_/term_document.js'/>
+                      <script src='http://reluk.ca/project/proto-wayic/lex/_/term_document.js'/>
                       </body>
 
                 ( [COR]

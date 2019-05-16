@@ -1,6 +1,6 @@
-wayic/lex/_/manual.task - Instructions
+proto-wayic/lex/_/manual.task - Instructions
 
-    < see also http://reluk.ca/project/web/manual.task
+    < see also http://reluk.ca/project/proto-web/manual.task
 
     ────────────────────────────────────────────────────────────────────────────────────────────────────
     Publication`
@@ -9,7 +9,7 @@ wayic/lex/_/manual.task - Instructions
         - these are the files named with an extension of `.js` -
         - they are served to the Web each with a special response header as detailed below
         - working example of a suitable header configuration for Apache HTTP Server
-            < http://reluk.ca/sys/host/server/etc/apache2/7_domain/reluk.ca/public/5_in_project_wayic_lex.conf
+            < http://reluk.ca/sys/computer/server/etc/apache2/7_domain/reluk.ca/public/5_in_project_proto-wayic_lex.conf
         * cross origin responses are enabled
             - the programmatic resource files of this project are served to the Web
               each with a response header of `Access-Control-Allow-Origin: *` -
@@ -17,14 +17,14 @@ wayic/lex/_/manual.task - Instructions
             - this header grants to programmatic requesters originating from all network domains (`*`)
               permission to read the files
                 ( https://www.w3.org/TR/cors/
-            - such requesters include the content importers of other `wayic.lex` compatible
+            - such requesters include the content importers of other `proto-wayic.lex` compatible
               dictionaries published at remote locations
                 ( ./doc.task § content importer
     + term documents
         - these are the files named without an extension
         - they are served to the Web each with special response headers as detailed below
         - working example of a suitable header configuration for Apache HTTP Server
-            < http://reluk.ca/sys/host/server/etc/apache2/7_domain/reluk.ca/public/content_type/term_document.conf
+            < http://reluk.ca/sys/computer/server/etc/apache2/7_domain/reluk.ca/public/content_type/term_document.conf
         * cross origin responses are enabled
             - the term documents of this project are served to the Web
               each with a response header of `Access-Control-Allow-Origin: *` -
@@ -34,7 +34,7 @@ wayic/lex/_/manual.task - Instructions
                 ( https://www.w3.org/TR/cors/
             - such requesters include the content importers both of:
                 ( ./doc.task § content importer
-                - other `wayic.lex` compatible dictionaries published at remote locations
+                - other `proto-wayic.lex` compatible dictionaries published at remote locations
                 - copies of the present dictionary stored in local file systems (null domain)
                   and viewed in a browser under a 'file' scheme
         * content type is XHTML
