@@ -23,7 +23,7 @@
   *
   * TESTING AND TROUBLESHOOTING
   * ---------------------------
-  *   See also <http://reluk.ca/project/proto-web/manual.task § troubleshooting>.
+  *   See also <http://reluk.ca/project/proto-Web/manual.task § troubleshooting>.
   *
   *   Console reporting
   *   -----------------
@@ -64,7 +64,7 @@ console.assert( (eval('var _tmp = null'), typeof _tmp === 'undefined'),
       */
     function run( relukDir )
     {
-        summonScript( relukDir + 'proto-web/client_side.js', ( _Event ) =>
+        summonScript( relukDir + 'proto-Web/client_side.js', ( _Event ) =>
         {
             if( window.ca_reluk_web_CSide === undefined ) return; // Script failed [WA]
 
