@@ -2,6 +2,7 @@
 <html xml:lang='en-CA' xmlns='http://www.w3.org/1999/xhtml'>
     <head>
         <title>‘extracast’</title>
+        <!-- ‘ecto-’ might speak easier than ‘extra-’ here. -->
         </head>
     <body>
         <a rel='content-repository' href='http://reluk.ca/project/proto-wayic/cast/extracast'>content</a>
